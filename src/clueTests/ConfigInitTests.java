@@ -55,7 +55,7 @@ public class ConfigInitTests {
 	}
 	//Tests for Bad config format exceptions
 	@Test (expected= BadConfigFormatException.class)
-	public void BadConfigTest() throws BadConfigFormatException, FileNotFoundException{
+	public void BadConfigRowTest() throws BadConfigFormatException, FileNotFoundException{
 		//overload board with bad files
 		ClueGame game = new ClueGame("BadBoardLayout.csv", "BoardLegend.txt");
 		game.loadRoomConfig();
@@ -72,13 +72,10 @@ public class ConfigInitTests {
 	          }
 	      
 		 }
-			
-		
-		
 	}
 	
 	@Test (expected= BadConfigFormatException.class)
-	public void BadConfigTest2() throws BadConfigFormatException, FileNotFoundException{
+	public void BadConfigRoomTest() throws BadConfigFormatException, FileNotFoundException{
 		//overload board with bad files
 		Map<Character, String> rooms=board.getRooms();
 		
@@ -90,7 +87,7 @@ public class ConfigInitTests {
 		
 	}
 	@Test (expected= BadConfigFormatException.class)
-	public void BadConfigTest3() throws BadConfigFormatException, FileNotFoundException{
+	public void BadConfigColumnTest() throws BadConfigFormatException, FileNotFoundException{
 		//overload board with bad files
 		
 		Scanner s = new Scanner(new File("ClueLegend.txt"));
