@@ -1,11 +1,13 @@
 package clueTests;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Map;
+import java.util.Scanner;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -51,29 +53,78 @@ public class ConfigInitTests {
 		Assert.assertEquals(NUM_ROWS, board.getNumRows());
 		Assert.assertEquals(NUM_COLUMNS, board.getNumCols());		
 	}
-	/*not done
 	//Tests for Bad config format exceptions
 	@Test (expected= BadConfigFormatException.class)
-	public void test() throws BadConfigFormatException, FileNotFoundException{
+	public void BadConfigTest() throws BadConfigFormatException, FileNotFoundException{
 		//overload board with bad files
 		ClueGame game = new ClueGame("BadBoardLayout.csv", "BoardLegend.txt");
 		game.loadRoomConfig();
-		game.getBoard().loadBoardConfig();	
+		game.getBoard().loadBoardConfig();
+		
+		Scanner s = new Scanner(new File(""));
+		 while (s.hasNextLine()) 
+		 {
+	          String line = s.nextLine();
+	          String[] cols = line.split(",");
+	          if(cols.length != board.getNumCols())
+	          {
+	           	throw new BadConfigFormatException();
+	          }
+	      
+		 }
+			
+		
+		
 	}
-	//Tests for Bad config format exceptions
+	
 	@Test (expected= BadConfigFormatException.class)
-	public void test() throws BadConfigFormatException, FileNotFoundException{
+	public void BadConfigTest2() throws BadConfigFormatException, FileNotFoundException{
 		//overload board with bad files
-		ClueGame game = new ClueGame("BadBoardLayout.csv", "BoardLegend.txt");
-		game.loadRoomConfig();
-		game.getBoard().loadBoardConfig();	
+		Map<Character, String> rooms=board.getRooms();
+		
+		if(rooms.get('K') != "Kitchen" || rooms.get('S') != "Study" ||
+		   rooms.get('H') != "Hall" ||rooms.get('O') != "Lounge" || rooms.get('X') != "Closet")
+			{
+				throw new BadConfigFormatException();
+			}
+		
 	}
-	//Tests for Bad config format exceptions
 	@Test (expected= BadConfigFormatException.class)
-	public void test() throws BadConfigFormatException, FileNotFoundException{
+	public void BadConfigTest3() throws BadConfigFormatException, FileNotFoundException{
 		//overload board with bad files
-		ClueGame game = new ClueGame("BadBoardLayout.csv", "BoardLegend.txt");
-		game.loadRoomConfig();
-		game.getBoard().loadBoardConfig();	
-	}*/
+		
+		Scanner s = new Scanner(new File("ClueLegend.txt"));
+		 while (s.hasNextLine()) {
+	            String line = s.nextLine();
+	            String[] cols = line.split(",");
+	            if(cols.length < 2)
+	            {
+	            	throw new BadConfigFormatException();
+	            }
+	        }
+	}
+	@Test
+	public void doorWayTest()
+	{
+		BoardCell cell = board.getCellAt(0, 0);
+		Assert.assertEquals(false, cell.isDoorway());
+		
+		RoomCell cell2= board.getRoomCellAt(26, 3);
+		Assert.assertEquals('L', cell2.getDoorDirection());
+		
+		BoardCell cell3 = null;
+		int numOfDoors =0;
+		for(int i=0; i<board.getNumRows();i++)
+		{
+			for(int j=0; j<board.getNumCols();j++)
+			{
+				cell3 = board.getCellAt(i, j);
+				if(cell3 instanceof RoomCell && cell3.isDoorway())
+				{
+					numOfDoors++;
+				}
+			}
+		}
+		Assert.assertEquals(19, numOfDoors);
+	}
 }

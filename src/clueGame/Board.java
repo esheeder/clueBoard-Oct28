@@ -27,5 +27,13 @@ public class Board {
 	public int getNumCols(){
 		return numCols;
 	}
+	public RoomCell getRoomCellAt(int i, int j) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public BoardCell getCellAt(int i, int j) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

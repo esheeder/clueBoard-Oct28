@@ -50,7 +50,7 @@ public class CR_FileInitTests {
 	public void testBoardDimensions() {
 		// Ensure we have the proper number of rows and columns
 		assertEquals(NUM_ROWS, board.getNumRows());
-		assertEquals(NUM_COLUMNS, board.getNumColumns());		
+		assertEquals(NUM_COLUMNS, board.getNumCols());		
 	}
 	
 	// Test a doorway in each direction, plus two cells that are not
@@ -85,10 +85,10 @@ public class CR_FileInitTests {
 	public void testNumberOfDoorways() 
 	{
 		int numDoors = 0;
-		int totalCells = board.getNumColumns() * board.getNumRows();
+		int totalCells = board.getNumCols() * board.getNumRows();
 		Assert.assertEquals(506, totalCells);
 		for (int row=0; row<board.getNumRows(); row++)
-			for (int col=0; col<board.getNumColumns(); col++) {
+			for (int col=0; col<board.getNumCols(); col++) {
 				BoardCell cell = board.getCellAt(row, col);
 				if (cell.isDoorway())
 					numDoors++;

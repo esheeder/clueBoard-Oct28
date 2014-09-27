@@ -7,7 +7,7 @@ abstract public class BoardCell {
 		// TODO Auto-generated constructor stub
 	}
 	public boolean isWalkway(){
-		return true;
+		return false;
 	}
 	public boolean isRoom(){
 		return false;

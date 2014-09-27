@@ -8,11 +8,18 @@ public class ClueGame {
 	public ClueGame() {
 		// TODO Auto-generated constructor stub
 	}
+	public ClueGame(String string, String string2) {
+		// TODO Auto-generated constructor stub
+	}
 	public void loadConfigFiles(){
 		board.loadBoardConfig();
 	}
 	public Board getBoard(){
 		return board;
+	}
+	public void loadRoomConfig() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
