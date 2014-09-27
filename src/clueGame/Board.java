@@ -18,5 +18,14 @@ public class Board {
 	public BoardCell getBoardPiece(int row, int col){
 		return boardLayout[row][col];
 	}
-
+	public Map<Character, String> getRooms(){
+		return rooms;
+	}
+	public int getNumRows(){
+		return numRows;
+	}
+	public int getNumCols(){
+		return numCols;
+	}
+	
 }

@@ -11,5 +11,8 @@ public class ClueGame {
 	public void loadConfigFiles(){
 		board.loadBoardConfig();
 	}
+	public Board getBoard(){
+		return board;
+	}
 
 }
