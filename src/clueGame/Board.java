@@ -130,9 +130,11 @@ public class Board {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public LinkedList<BoardCell> getAdjList(RoomCell cell1) {
+	public LinkedList<BoardCell> getAdjList(int row, int col) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+	public void calcAdjacencies(){
+		
+	}
 }
