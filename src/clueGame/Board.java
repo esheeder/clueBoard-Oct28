@@ -2,6 +2,7 @@ package clueGame;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -64,7 +65,7 @@ public class Board {
 				if(rooms.containsKey(key.charAt(0)) && key.length() == 1){
 					boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.NONE);
 				}else if(key=="W"){
-					boardLayout[row][col]=new Walkway();
+					boardLayout[row][col]=new WalkwayCell();
 				}else if(!rooms.containsKey(key.charAt(0))){
 					throw new BadConfigFormatException("Invalid symbol in room.");
 				}else{
@@ -120,6 +121,18 @@ public class Board {
 	}
 	public void setRooms( Map<Character,String> rooms){
 		this.rooms=rooms;
+	}
+	public void calcTargets(int row, int col, int roll) {
+		// TODO Auto-generated method stub
+		
+	}
+	public Set<BoardCell> getTargets() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public LinkedList<BoardCell> getAdjList(RoomCell cell1) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
