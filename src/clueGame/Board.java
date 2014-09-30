@@ -19,7 +19,7 @@ public class Board {
 		FileReader reader= null;
 		Scanner setUp=null;
 		try{
-			reader=new FileReader("BoardLayout.csv");
+			reader=new FileReader(ClueGame.boardLayout);
 			setUp=new Scanner(reader);
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
@@ -43,7 +43,7 @@ public class Board {
 		FileReader reader= null;
 		Scanner in = null;
 		try{
-			reader=new FileReader("BoardLayout.csv");
+			reader=new FileReader(ClueGame.boardLayout);
 			in= new Scanner(reader);
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
@@ -95,7 +95,7 @@ public class Board {
 	public int getNumRows(){
 		return numRows;
 	}
-	public int getNumCols(){
+	public int getNumColumns(){
 		return numCols;
 	}
 	public RoomCell getRoomCellAt(int i, int j) {

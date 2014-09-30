@@ -10,8 +10,8 @@ import java.util.Scanner;
 public class ClueGame {
 	private Map<Character, String> rooms;
 	private Board board;
-	private String boardLayout;
-	private String legend;
+	public static String boardLayout;
+	public static String legend;
 	public ClueGame() {
 		// TODO Auto-generated constructor stub
 	}

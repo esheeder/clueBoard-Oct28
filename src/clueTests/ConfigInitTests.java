@@ -52,7 +52,7 @@ public class ConfigInitTests {
 	@Test
 	public void testBoardDimensions() {
 		Assert.assertEquals(NUM_ROWS, board.getNumRows());
-		Assert.assertEquals(NUM_COLUMNS, board.getNumCols());		
+		Assert.assertEquals(NUM_COLUMNS, board.getNumColumns());		
 	}
 	// Test a few room cells to ensure the room initial is
 	// correct.
@@ -77,7 +77,7 @@ public class ConfigInitTests {
 		int numOfDoors =0;
 		for(int i=0; i<board.getNumRows();i++)
 		{
-			for(int j=0; j<board.getNumCols();j++)
+			for(int j=0; j<board.getNumColumns();j++)
 			{
 				cell3 = board.getCellAt(i, j);
 				if(cell3 instanceof RoomCell && cell3.isDoorway())
@@ -101,7 +101,7 @@ public class ConfigInitTests {
 		 {
 	          String line = s.nextLine();
 	          String[] cols = line.split(",");
-	          if(cols.length != board.getNumCols())
+	          if(cols.length != board.getNumColumns())
 	          {
 	           	throw new BadConfigFormatException();
 	          }
@@ -126,14 +126,14 @@ public class ConfigInitTests {
 		//overload board with bad files
 		
 		Scanner s = new Scanner(new File("ClueLegend.txt"));
-		 while (s.hasNextLine()) {
-	            String line = s.nextLine();
-	            String[] cols = line.split(",");
-	            if(cols.length < 2)
-	            {
-	            	throw new BadConfigFormatException();
-	            }
-	        }
+		while (s.hasNextLine()) {
+            String line = s.nextLine();
+            String[] cols = line.split(",");
+            if(cols.length < 2)
+            {
+            	throw new BadConfigFormatException();
+            }
+	    }
 	}
 	
 }
