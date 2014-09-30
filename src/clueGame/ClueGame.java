@@ -18,8 +18,8 @@ public class ClueGame {
 	public ClueGame(String boardLayout, String legend) {
 		rooms=new HashMap<Character, String>();
 		board=new Board();
-		this.boardLayout=boardLayout;
-		this.legend=legend;
+		ClueGame.boardLayout=boardLayout;
+		ClueGame.legend=legend;
 	}
 	public void loadConfigFiles(){
 		try{

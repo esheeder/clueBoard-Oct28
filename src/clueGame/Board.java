@@ -1,7 +1,12 @@
 package clueGame;
 
+import clueGame.BoardCell;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
@@ -41,6 +46,7 @@ public class Board {
 	}
 	//load board into board layout
 	public void loadBoardConfig() throws BadConfigFormatException{
+		//initialize board size
 		initializeBoardLayout();
 		FileReader reader= null;
 		Scanner in = null;
@@ -53,15 +59,16 @@ public class Board {
 		String[] line;
 		String key=null;
 		int row=0;
+		//populate board with proper cell types
 		while(in.hasNextLine()){
 			line=in.nextLine().split(",");
 			if(line.length!=numCols){
 				throw new BadConfigFormatException("Improper number of columns in boardLayout.");
 			}
 			int col=0;
+			//populate each row left to right
 			for(String type:line){
 				key=type;
-				//System.out.println("[" + row + "," + col + "]: " + key);
 				if(rooms.containsKey(key.charAt(0)) && key.length() == 1){
 					boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.NONE);
 				}else if(key=="W"){
@@ -138,3 +145,104 @@ public class Board {
 		
 	}
 }
+/* REFERENCE TO WORK WITH FORM CLUE PATHS
+private Map<Integer, LinkedList<BoardCell>> adjMtx;
+private HashMap<Integer, BoardCell> cells;
+private Set<BoardCell> visited;
+private Set<BoardCell> targets;
+private final int BOARD_HEIGHT=4;
+private final int BOARD_WIDTH=4;
+public IntBoard() {
+	adjMtx= new HashMap<Integer, LinkedList<BoardCell>>();
+	cells = new HashMap<Integer, BoardCell>();
+	int cellNumber = 0;
+	//populate entire adjacency list
+	for(int i=0; i < BOARD_WIDTH; i++){
+		for(int j=0; j < BOARD_HEIGHT; j++){
+			BoardCell cell = new BoardCell(i,j);
+			cells.put(cellNumber, cell);
+			cellNumber++;
+		}
+	}
+	cellNumber=0;
+	for(int i=0; i < BOARD_WIDTH; i++){
+		for(int j=0; j < BOARD_HEIGHT; j++){
+			calcAdjacencies(cellNumber, getCell(i,j));
+			cellNumber++;
+			
+		}
+	}
+	visited= new HashSet<BoardCell>();
+	targets= new HashSet<BoardCell>();
+}
+//calculate adjacencies for single cell and populates adjList
+public void calcAdjacencies(int cellNum, BoardCell cell){
+	int row=cell.getRow();
+	int col=cell.getCol();
+	LinkedList<BoardCell> adjCells=new LinkedList<BoardCell>();
+	ArrayList<BoardCell> neighbors=new ArrayList<BoardCell>();
+	if(row+1 < BOARD_HEIGHT)
+	neighbors.add(getCell(row+1, col));
+	if(row-1 >= 0)
+	neighbors.add(getCell(row-1, col));
+	if(col+1 < BOARD_HEIGHT)
+	neighbors.add(getCell(row, col+1));
+	if(col-1 >= 0)
+	neighbors.add(getCell(row, col-1));
+	for(int i=0; i<neighbors.size(); i++)
+	{
+			adjCells.add(neighbors.get(i));
+	
+	}
+	adjMtx.put(cellNum, adjCells);
+	
+}
+public void calcTargets(BoardCell cell, int roll){
+	//Clear sets for new roll
+	visited.clear();
+	targets.clear();
+	//add cell player is at
+	visited.add(cell);
+	//find targets
+	targetFinder(cell, roll);
+	for(BoardCell tmp:targets){
+		System.out.println(tmp + " is target");
+	}
+}
+//Helper function for calc targets
+public void targetFinder(BoardCell cell,int roll){
+	System.out.println(cell + " roll is" + roll);
+	LinkedList<BoardCell> adjCells=getAdjList(cell);
+	LinkedList<BoardCell> adjList=new LinkedList<BoardCell>();
+	for(BoardCell unvisited:adjCells){
+		if(!visited.contains(unvisited)){
+			adjList.add(unvisited);
+		}
+		
+	}
+	if(roll==1){
+		for(BoardCell targetCells:adjList){
+		
+			targets.add(targetCells);
+
+		}
+	}else{
+		for(BoardCell tmp:adjList){
+			visited.add(tmp);
+			targetFinder(tmp,roll-1);
+			visited.remove(tmp);
+		}
+	}
+}
+public Set<BoardCell> getTargets(){
+	return targets;
+}
+public LinkedList<BoardCell> getAdjList(BoardCell cell){
+	return adjMtx.get(BOARD_HEIGHT*cell.getRow()+cell.getCol());
+}
+public BoardCell getCell(int row, int col){
+	return cells.get(Math.abs(BOARD_HEIGHT*row + col));
+}
+
+}
+*/
