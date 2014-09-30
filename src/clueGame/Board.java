@@ -54,6 +54,9 @@ public class Board {
 		int row=0;
 		while(in.hasNextLine()){
 			line=in.nextLine().split(",");
+			if(line.length!=numCols){
+				throw new BadConfigFormatException("Improper number of columns in boardLayout.");
+			}
 			int col=0;
 			for(String type:line){
 				key=type;
@@ -88,10 +91,6 @@ public class Board {
 				}
 				col++;
 			}
-			//System.out.println(col);
-			/*if(col != numCols-1){
-				throw new BadConfigFormatException("Bad layout, incorrect number of columns.");
-			}*/
 			row++;
 		}
 		in.close();
