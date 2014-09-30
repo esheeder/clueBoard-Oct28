@@ -27,7 +27,7 @@ public class RoomCell extends BoardCell{
 	}
 	public Character getInitial() {
 		// TODO Auto-generated method stub
-		return null;
+		return roomInitial;
 	}
 	
 }

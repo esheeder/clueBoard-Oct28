@@ -35,5 +35,8 @@ public class Board {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	public void setRooms( Map<Character,String> rooms){
+		this.rooms=rooms;
+	}
 	
 }

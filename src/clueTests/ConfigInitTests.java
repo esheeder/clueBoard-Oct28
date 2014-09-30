@@ -1,5 +1,6 @@
 package clueTests;
 
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -23,8 +24,8 @@ public class ConfigInitTests {
 	//static so only sets up one time using @BeforeClass
 	private static Board board;
 	public static final int NUM_ROOMS = 11;
-	public static final int NUM_ROWS = 22;
-	public static final int NUM_COLUMNS = 23;
+	public static final int NUM_ROWS = 29;
+	public static final int NUM_COLUMNS = 21;
 	
 	@BeforeClass
 	public static void testInit(){
@@ -52,6 +53,42 @@ public class ConfigInitTests {
 	public void testBoardDimensions() {
 		Assert.assertEquals(NUM_ROWS, board.getNumRows());
 		Assert.assertEquals(NUM_COLUMNS, board.getNumCols());		
+	}
+	// Test a few room cells to ensure the room initial is
+	// correct.
+	@Test
+	public void testRoomInitials() {
+		Assert.assertEquals('C', board.getRoomCellAt(0, 0).getInitial());
+		Assert.assertEquals('R', board.getRoomCellAt(4, 8).getInitial());
+		Assert.assertEquals('B', board.getRoomCellAt(9, 0).getInitial());
+		Assert.assertEquals('O', board.getRoomCellAt(21, 22).getInitial());
+		Assert.assertEquals('K', board.getRoomCellAt(21, 0).getInitial());
+	}
+}
+/*
+	@Test
+	public void doorWayTest()
+	{
+		BoardCell cell = board.getCellAt(0, 0);
+		Assert.assertEquals(false, cell.isDoorway());
+		
+		RoomCell cell2= board.getRoomCellAt(26, 3);
+		Assert.assertEquals('L', cell2.getDoorDirection());
+		
+		BoardCell cell3 = null;
+		int numOfDoors =0;
+		for(int i=0; i<board.getNumRows();i++)
+		{
+			for(int j=0; j<board.getNumCols();j++)
+			{
+				cell3 = board.getCellAt(i, j);
+				if(cell3 instanceof RoomCell && cell3.isDoorway())
+				{
+					numOfDoors++;
+				}
+			}
+		}
+		Assert.assertEquals(19, numOfDoors);
 	}
 	//Tests for Bad config format exceptions
 	@Test (expected= BadConfigFormatException.class)
@@ -100,28 +137,6 @@ public class ConfigInitTests {
 	            }
 	        }
 	}
-	@Test
-	public void doorWayTest()
-	{
-		BoardCell cell = board.getCellAt(0, 0);
-		Assert.assertEquals(false, cell.isDoorway());
-		
-		RoomCell cell2= board.getRoomCellAt(26, 3);
-		Assert.assertEquals('L', cell2.getDoorDirection());
-		
-		BoardCell cell3 = null;
-		int numOfDoors =0;
-		for(int i=0; i<board.getNumRows();i++)
-		{
-			for(int j=0; j<board.getNumCols();j++)
-			{
-				cell3 = board.getCellAt(i, j);
-				if(cell3 instanceof RoomCell && cell3.isDoorway())
-				{
-					numOfDoors++;
-				}
-			}
-		}
-		Assert.assertEquals(19, numOfDoors);
-	}
+	
 }
+*/

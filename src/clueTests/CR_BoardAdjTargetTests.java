@@ -1,4 +1,4 @@
-package clueTests;
+/*package clueTests;
 
 import java.util.LinkedList;
 import java.util.Set;
@@ -308,4 +308,4 @@ public class CR_BoardAdjTargetTests {
 		Assert.assertTrue(targets.contains(board.getCellAt(4, 18)));
 	}
 
-}
+}*/
