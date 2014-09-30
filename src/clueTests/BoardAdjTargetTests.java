@@ -16,7 +16,7 @@ public class BoardAdjTargetTests {
 	private static Board board;
 	@BeforeClass
 	public static void setUp() {
-		ClueGame game = new ClueGame();
+		ClueGame game = new ClueGame("BoardLayout.csv", "Legend.txt");
 		game.loadConfigFiles();
 		board = game.getBoard();
 		board.calcAdjacencies();
@@ -88,7 +88,6 @@ public class BoardAdjTargetTests {
 	@Test 
 	public void testTargetsIntoRoom()
 	{
-		
 		board.calcTargets(15, 2, 2);
 		Set<BoardCell> targets= board.getTargets();
 		
@@ -101,9 +100,6 @@ public class BoardAdjTargetTests {
 		Assert.assertTrue(targets.contains(board.getCellAt(18, 0)));
 		Assert.assertTrue(targets.contains(board.getCellAt(14, 0)));
 		Assert.assertTrue(targets.contains(board.getCellAt(13, 1)));
-		
-		
-		
 	}
 	public void testTargetsSixSteps() {
 		board.calcTargets(14, 0, 6);

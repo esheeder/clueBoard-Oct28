@@ -1,4 +1,4 @@
-/*package clueTests;
+package clueTests;
 
 import java.util.LinkedList;
 import java.util.Set;
@@ -15,7 +15,7 @@ public class CR_BoardAdjTargetTests {
 	private static Board board;
 	@BeforeClass
 	public static void setUp() {
-		ClueGame game = new ClueGame();
+		ClueGame game = new ClueGame("BoardLayout.csv", "Legend.txt");
 		game.loadConfigFiles();
 		board = game.getBoard();
 		board.calcAdjacencies();
@@ -308,4 +308,4 @@ public class CR_BoardAdjTargetTests {
 		Assert.assertTrue(targets.contains(board.getCellAt(4, 18)));
 	}
 
-}*/
+}
