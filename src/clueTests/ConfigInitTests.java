@@ -96,7 +96,7 @@ public class ConfigInitTests {
 		game.loadRoomConfig();
 		game.getBoard().loadBoardConfig();
 		
-		Scanner s = new Scanner(new File(""));
+		/*Scanner s = new Scanner(new File(""));
 		 while (s.hasNextLine()) 
 		 {
 	          String line = s.nextLine();
@@ -106,26 +106,23 @@ public class ConfigInitTests {
 	           	throw new BadConfigFormatException();
 	          }
 	      
-		 }
+		 }*/
 	}
 	
 	@Test (expected= BadConfigFormatException.class)
 	public void BadConfigRoomTest() throws BadConfigFormatException, FileNotFoundException{
 		//overload board with bad files
-		Map<Character, String> rooms=board.getRooms();
-		
-		if(rooms.get('K') != "Kitchen" || rooms.get('S') != "Study" ||
-		   rooms.get('H') != "Hall" ||rooms.get('O') != "Lounge" || rooms.get('X') != "Closet")
-			{
-				throw new BadConfigFormatException();
-			}
-		
+		ClueGame game = new ClueGame("BadBoardRoom.csv", "BoardLegend.txt");
+		game.loadRoomConfig();
+		game.getBoard().loadBoardConfig();
 	}
 	@Test (expected= BadConfigFormatException.class)
-	public void BadConfigColumnTest() throws BadConfigFormatException, FileNotFoundException{
+	public void BadConfigLegendTest() throws BadConfigFormatException, FileNotFoundException{
 		//overload board with bad files
-		
-		Scanner s = new Scanner(new File("ClueLegend.txt"));
+		ClueGame game = new ClueGame("BoardLayout.csv", "BadBoardLegend.txt");
+		game.loadRoomConfig();
+		game.getBoard().loadBoardConfig();
+		/*Scanner s = new Scanner(new File("ClueLegend.txt"));
 		while (s.hasNextLine()) {
             String line = s.nextLine();
             String[] cols = line.split(",");
@@ -133,7 +130,7 @@ public class ConfigInitTests {
             {
             	throw new BadConfigFormatException();
             }
-	    }
+	    }*/
 	}
 	
 }

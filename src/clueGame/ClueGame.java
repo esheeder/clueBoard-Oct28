@@ -22,14 +22,23 @@ public class ClueGame {
 		this.legend=legend;
 	}
 	public void loadConfigFiles(){
-		loadRoomConfig();
-		board.loadBoardConfig();
+		try{
+			loadRoomConfig();
+		}catch(BadConfigFormatException e){
+			System.out.println(e.getMessage());
+		}
+		try{
+			board.loadBoardConfig();
+		}catch(BadConfigFormatException e){
+			System.out.println(e.getMessage());
+		}
+	
 	}
 	public Board getBoard(){
 		return board;
 	}
 	//populate rooms map
-	public void loadRoomConfig() {
+	public void loadRoomConfig() throws BadConfigFormatException{
 		FileReader reader= null;
 		Scanner in = null;
 		try{
@@ -43,6 +52,10 @@ public class ClueGame {
 		char roomKey;
 		while(in.hasNextLine()){
 			legendLine=in.nextLine();
+			String[] testLine=legendLine.split(",");
+			if(testLine.length > 2){
+				throw new BadConfigFormatException("Cannot have more than two entries on single line in legend.");
+			}
 			roomKey=legendLine.charAt(0);
 			room=legendLine.substring(3);
 			rooms.put(roomKey, room);

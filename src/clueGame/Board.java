@@ -15,6 +15,7 @@ public class Board {
 	public Board() {
 		// TODO Auto-generated constructor stub
 	}
+	//tell boardLayout what size to be
 	public void initializeBoardLayout(){
 		FileReader reader= null;
 		Scanner setUp=null;
@@ -37,7 +38,8 @@ public class Board {
 		boardLayout= new BoardCell[numRows][numCols]; 
 		setUp.close();
 	}
-	public void loadBoardConfig(){
+	//load board into board layout
+	public void loadBoardConfig() throws BadConfigFormatException{
 		initializeBoardLayout();
 		FileReader reader= null;
 		Scanner in = null;
@@ -60,6 +62,8 @@ public class Board {
 					boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.NONE);
 				}else if(key=="W"){
 					boardLayout[row][col]=new Walkway();
+				}else if(!rooms.containsKey(key.charAt(0))){
+					throw new BadConfigFormatException("Invalid symbol in room.");
 				}else{
 					char direction =key.charAt(1);
 					switch (direction){
