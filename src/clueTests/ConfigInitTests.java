@@ -22,6 +22,7 @@ import clueGame.BoardCell;
 import clueGame.ClueGame;
 import clueGame.RoomCell;
 
+
 public class ConfigInitTests {
 	//static so only sets up one time using @BeforeClass
 	private static Board board;
