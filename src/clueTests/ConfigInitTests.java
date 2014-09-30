@@ -58,22 +58,20 @@ public class ConfigInitTests {
 	// correct.
 	@Test
 	public void testRoomInitials() {
-		Assert.assertEquals('C', board.getRoomCellAt(0, 0).getInitial());
-		Assert.assertEquals('R', board.getRoomCellAt(4, 8).getInitial());
-		Assert.assertEquals('B', board.getRoomCellAt(9, 0).getInitial());
-		Assert.assertEquals('O', board.getRoomCellAt(21, 22).getInitial());
-		Assert.assertEquals('K', board.getRoomCellAt(21, 0).getInitial());
+		Assert.assertEquals('R', board.getRoomCellAt(0, 0).getInitial());
+		Assert.assertEquals('B', board.getRoomCellAt(4, 8).getInitial());
+		Assert.assertEquals('C', board.getRoomCellAt(24, 17).getInitial());
+		Assert.assertEquals('L', board.getRoomCellAt(13, 20).getInitial());
+		Assert.assertEquals('X', board.getRoomCellAt(16, 12).getInitial());
 	}
-}
-/*
 	@Test
 	public void doorWayTest()
 	{
 		BoardCell cell = board.getCellAt(0, 0);
 		Assert.assertEquals(false, cell.isDoorway());
 		
-		RoomCell cell2= board.getRoomCellAt(26, 3);
-		Assert.assertEquals('L', cell2.getDoorDirection());
+		RoomCell cell2= board.getRoomCellAt(26, 4);
+		Assert.assertEquals(RoomCell.DoorDirection.LEFT, cell2.getDoorDirection());
 		
 		BoardCell cell3 = null;
 		int numOfDoors =0;
@@ -88,7 +86,7 @@ public class ConfigInitTests {
 				}
 			}
 		}
-		Assert.assertEquals(19, numOfDoors);
+		Assert.assertEquals(18, numOfDoors);
 	}
 	//Tests for Bad config format exceptions
 	@Test (expected= BadConfigFormatException.class)
@@ -139,4 +137,3 @@ public class ConfigInitTests {
 	}
 	
 }
-*/

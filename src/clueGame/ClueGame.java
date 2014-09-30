@@ -22,8 +22,8 @@ public class ClueGame {
 		this.legend=legend;
 	}
 	public void loadConfigFiles(){
-		board.loadBoardConfig();
 		loadRoomConfig();
+		board.loadBoardConfig();
 	}
 	public Board getBoard(){
 		return board;
