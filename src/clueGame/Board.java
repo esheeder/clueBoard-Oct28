@@ -35,7 +35,6 @@ public class Board {
 		}
 		numRows=rows;
 		boardLayout= new BoardCell[numRows][numCols]; 
-		System.out.println(numRows + "     " + numCols);
 		setUp.close();
 	}
 	public void loadBoardConfig(){
@@ -56,14 +55,13 @@ public class Board {
 			int col=0;
 			for(String type:line){
 				key=type;
-				System.out.println("[" + row + "," + col + "]: " + key);
+				//System.out.println("[" + row + "," + col + "]: " + key);
 				if(rooms.containsKey(key.charAt(0)) && key.length() == 1){
 					boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.NONE);
 				}else if(key=="W"){
 					boardLayout[row][col]=new Walkway();
 				}else{
 					char direction =key.charAt(1);
-					System.out.println(direction);
 					switch (direction){
 						case 'U':
 							boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.UP);
@@ -76,6 +74,10 @@ public class Board {
 							break;
 						case 'R':
 							boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.RIGHT);
+							break;
+						case 'N':
+							boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.NONE);
+							break;
 						default:
 							break;
 					}

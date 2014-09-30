@@ -89,6 +89,7 @@ public class CR_FileInitTests {
 		for (int row=0; row<board.getNumRows(); row++)
 			for (int col=0; col<board.getNumColumns(); col++) {
 				BoardCell cell = board.getCellAt(row, col);
+				System.out.println(cell + " " + row + " " + col);
 				if (cell.isDoorway())
 					numDoors++;
 			}

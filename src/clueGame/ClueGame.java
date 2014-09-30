@@ -49,11 +49,5 @@ public class ClueGame {
 		}
 		board.setRooms(rooms);
 	}
-	//temp
-	public static void main(String[] args){
-		ClueGame game=new ClueGame("BoardLayout.csv", "BoardLegend.txt");
-		game.loadRoomConfig();
-		
-	}
 
 }
