@@ -88,6 +88,10 @@ public class Board {
 				}
 				col++;
 			}
+			//System.out.println(col);
+			/*if(col != numCols-1){
+				throw new BadConfigFormatException("Bad layout, incorrect number of columns.");
+			}*/
 			row++;
 		}
 		in.close();
