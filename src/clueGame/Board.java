@@ -18,8 +18,17 @@ public class Board {
 	private BoardCell[][] boardLayout; 
 	private Set<BoardCell> targets;
 	private Map<Character, String> rooms;
+	private Set<BoardCell> visited;
+	//Map for adj matrix calculations
+	private Map<Integer, LinkedList<BoardCell>> adjMtx;
+	//Stuff from cluePaths assignment, may not use
+	private Map<Integer, BoardCell> boardCells;
+	
 	public Board() {
-		// TODO Auto-generated constructor stub
+		adjMtx= new HashMap<Integer, LinkedList<BoardCell>>();
+		boardCells = new HashMap<Integer, BoardCell>();
+		visited= new HashSet<BoardCell>();
+		targets= new HashSet<BoardCell>();
 	}
 	//tell boardLayout what size to be
 	public void initializeBoardLayout(){
@@ -142,7 +151,41 @@ public class Board {
 		return null;
 	}
 	public void calcAdjacencies(){
-		
+		int cellNumber = 0;
+		//populate entire adjacency list
+		for(int i=0; i < numCols; i++){
+			for(int j=0; j < numRows; j++){
+				boardCells.put(cellNumber, boardLayout[i][j]);
+				cellNumber++;
+			}
+		}
+		cellNumber=0;
+		for(int i=0; i < numCols; i++){
+			for(int j=0; j < numRows; j++){
+				populateAdjMtx(cellNumber, i, j);
+				cellNumber++;
+			}
+		}
+	}
+	private void populateAdjMtx(int cellNum, int row, int col){
+		LinkedList<BoardCell> adjCells=new LinkedList<BoardCell>();
+		ArrayList<BoardCell> neighbors=new ArrayList<BoardCell>();
+		if(row+1 < numRows && (boardLayout[row+1][col].isDoorway() || !boardLayout[row+1][col].isRoom()) ){
+			neighbors.add(boardLayout[row+1][col]);
+		}
+		if(row-1 >= 0 && (boardLayout[row-1][col].isDoorway() || !boardLayout[row-1][col].isRoom()) ){
+			neighbors.add(boardLayout[row-1][col]);
+		}
+		if(col+1 < numRows && (boardLayout[row][col+1].isDoorway() || !boardLayout[row][col+1].isRoom()) ){
+			neighbors.add(boardLayout[row][col+1]);
+		}
+		if(col-1 >= 0 && (boardLayout[row][col-1].isDoorway() || !boardLayout[row][col-1].isRoom()) ){
+			neighbors.add(boardLayout[row][col-1]);
+		}
+		for(int i=0; i<neighbors.size(); i++){
+			adjCells.add(neighbors.get(i));
+		}
+		adjMtx.put(cellNum, adjCells);
 	}
 }
 /* REFERENCE TO WORK WITH FORM CLUE PATHS
