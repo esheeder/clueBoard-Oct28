@@ -1,6 +1,7 @@
 package clueGame;
 
 import clueGame.BoardCell;
+import clueGame.RoomCell.DoorDirection;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -21,12 +22,9 @@ public class Board {
 	private Set<BoardCell> visited;
 	//Map for adj matrix calculations
 	private Map<Integer, LinkedList<BoardCell>> adjMtx;
-	//Stuff from cluePaths assignment, may not use
-	private Map<Integer, BoardCell> boardCells;
 	
 	public Board() {
 		adjMtx= new HashMap<Integer, LinkedList<BoardCell>>();
-		boardCells = new HashMap<Integer, BoardCell>();
 		visited= new HashSet<BoardCell>();
 		targets= new HashSet<BoardCell>();
 	}
@@ -78,11 +76,13 @@ public class Board {
 			//populate each row left to right
 			for(String type:line){
 				key=type;
-				if(rooms.containsKey(key.charAt(0)) && key.length() == 1){
+				if(rooms.containsKey(key.charAt(0)) && key.length() == 1 && !key.equals("W")){
 					boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.NONE);
-				}else if(key=="W"){
+				}else if(key.equals("W") && key.length() == 1){
 					boardLayout[row][col]=new WalkwayCell();
 				}else if(!rooms.containsKey(key.charAt(0))){
+					throw new BadConfigFormatException("Invalid symbol in room.");
+				}else if(key.charAt(0)=='W' && key.length() != 1){
 					throw new BadConfigFormatException("Invalid symbol in room.");
 				}else{
 					char direction =key.charAt(1);
@@ -106,6 +106,8 @@ public class Board {
 							break;
 					}
 				}
+				boardLayout[row][col].setRow(row);
+				boardLayout[row][col].setCol(col);
 				col++;
 			}
 			row++;
@@ -135,6 +137,11 @@ public class Board {
 	public BoardCell getCellAt(int i, int j) {
 		return boardLayout[i][j];
 	}
+	//HELPER FUNCTION FOR RETURN ADJLIST, maps an integer to a coordinate
+	public int getCellNumber(int row, int col){
+		int cellNumber=row*numCols+col;
+		return cellNumber;
+	}
 	public void setRooms( Map<Character,String> rooms){
 		this.rooms=rooms;
 	}
@@ -147,19 +154,10 @@ public class Board {
 		return null;
 	}
 	public LinkedList<BoardCell> getAdjList(int row, int col) {
-		// TODO Auto-generated method stub
-		return null;
+		return adjMtx.get(getCellNumber(row,col));
 	}
 	public void calcAdjacencies(){
 		int cellNumber = 0;
-		for(int i=0; i < numRows; i++){
-			for(int j=0; j < numCols; j++){
-				//System.out.println("[ " + i + ", " + j + "] " +boardLayout[i][j]);
-				boardCells.put(cellNumber, boardLayout[i][j]);
-				cellNumber++;
-			}
-		}
-		
 		cellNumber=0;
 		for(int i=0; i < numRows; i++){
 			for(int j=0; j < numCols; j++){
@@ -171,22 +169,86 @@ public class Board {
 	private void populateAdjMtx(int cellNum, int row, int col){
 		LinkedList<BoardCell> adjCells=new LinkedList<BoardCell>();
 		ArrayList<BoardCell> neighbors=new ArrayList<BoardCell>();
-		if(row+1 < numRows && (boardLayout[row+1][col].isDoorway() || !boardLayout[row+1][col].isRoom()) ){
-			neighbors.add(boardLayout[row+1][col]);
-		}
-		if(row-1 >= 0 && (boardLayout[row-1][col].isDoorway() || !boardLayout[row-1][col].isRoom()) ){
-			neighbors.add(boardLayout[row-1][col]);
-		}
-		if(col+1 < numCols && (boardLayout[row][col+1].isDoorway() || !boardLayout[row][col+1].isRoom()) ){
-			neighbors.add(boardLayout[row][col+1]);
-		}
-		if(col-1 >= 0 && (boardLayout[row][col-1].isDoorway() || !boardLayout[row][col-1].isRoom()) ){
-			neighbors.add(boardLayout[row][col-1]);
-		}
-		for(int i=0; i<neighbors.size(); i++){
-			adjCells.add(neighbors.get(i));
+		if(boardLayout[row][col].isRoom() && !boardLayout[row][col].isDoorway()){
+			
+		}else if(boardLayout[row][col].isDoorway()){
+			RoomCell door=(RoomCell)boardLayout[row][col];
+			if(door.getDoorDirection()==RoomCell.DoorDirection.UP && row-1 >=0 ){
+				neighbors.add(boardLayout[row-1][col]);
+			}else if(door.getDoorDirection()==RoomCell.DoorDirection.DOWN && row+1 < numRows){
+				neighbors.add(boardLayout[row+1][col]);
+			}else if(door.getDoorDirection()==RoomCell.DoorDirection.LEFT && col-1 >= 0){
+				neighbors.add(boardLayout[row][col-1]);
+			}else if(door.getDoorDirection()==RoomCell.DoorDirection.RIGHT && col+1 < numCols){
+				neighbors.add(boardLayout[row][col+1]);
+			}else{}
+			//check if neighbors is populated
+			if(neighbors.size() >0){
+				adjCells.add(neighbors.get(0));
+			}
+		}else{
+			if(row+1 < numRows && (boardLayout[row+1][col].isDoorway() || boardLayout[row+1][col].isWalkway())){
+				//if doorway is adjacent, check if proper direction
+				if(boardLayout[row+1][col].isDoorway()){
+					RoomCell room=(RoomCell)boardLayout[row+1][col];
+					if(room.getDoorDirection()==RoomCell.DoorDirection.UP){
+						neighbors.add(boardLayout[row+1][col]);
+					}else{}
+				}else{
+					neighbors.add(boardLayout[row+1][col]);
+				}
+			}
+			if(row-1 >= 0 && (boardLayout[row-1][col].isDoorway() || boardLayout[row-1][col].isWalkway()) ){
+				//if doorway is adjacent, check if proper direction
+				if(boardLayout[row-1][col].isDoorway()){
+					RoomCell room=(RoomCell)boardLayout[row-1][col];
+					if(room.getDoorDirection()==RoomCell.DoorDirection.DOWN){
+						neighbors.add(boardLayout[row-1][col]);
+					}else{}
+				}else{
+					neighbors.add(boardLayout[row-1][col]);
+				}
+			}
+			if(col+1 < numCols && (boardLayout[row][col+1].isDoorway() || boardLayout[row][col+1].isWalkway()) ){
+				//if doorway is adjacent, check if proper direction
+				if(boardLayout[row][col+1].isDoorway()){
+					RoomCell room=(RoomCell)boardLayout[row][col+1];
+					if(room.getDoorDirection()==RoomCell.DoorDirection.LEFT){
+						neighbors.add(boardLayout[row][col+1]);
+					}else{}
+				}else{
+					neighbors.add(boardLayout[row][col+1]);
+				}
+			}
+			if(col-1 >= 0 && (boardLayout[row][col-1].isDoorway() || boardLayout[row][col-1].isWalkway()) ){
+				//if doorway is adjacent, check if proper direction
+				if(boardLayout[row][col-1].isDoorway()){
+					RoomCell room=(RoomCell)boardLayout[row][col-1];
+					if(room.getDoorDirection()==RoomCell.DoorDirection.RIGHT){
+						neighbors.add(boardLayout[row][col-1]);
+					}else{}
+				}else{
+					neighbors.add(boardLayout[row][col-1]);
+				}
+			}
+			for(int i=0; i<neighbors.size(); i++){
+				adjCells.add(neighbors.get(i));
+			}
 		}
 		adjMtx.put(cellNum, adjCells);
+	}
+	//TEMPORARY
+	public static void main(String[] args){
+		ClueGame game=new ClueGame("BoardLayout.csv","BoardLegend.txt");
+		game.loadConfigFiles();
+		Board board=game.getBoard();
+		board.calcAdjacencies();
+		LinkedList<BoardCell> adjCells=board.getAdjList(3,12);
+		System.out.println(board.getCellAt(3,12));
+		System.out.println(adjCells.size());
+		for(BoardCell cell:adjCells){
+			System.out.println(cell);
+		}
 	}
 }
 /* REFERENCE TO WORK WITH FORM CLUE PATHS

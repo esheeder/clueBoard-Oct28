@@ -14,7 +14,7 @@ public class RoomCell extends BoardCell{
 	private DoorDirection doorDirection;
 	private char roomInitial;
 	
-	public RoomCell(char roomInitial, DoorDirection direction) {
+	public RoomCell(char roomInitial, DoorDirection direction){
 		this.roomInitial=roomInitial;
 		this.doorDirection=direction;
 	}

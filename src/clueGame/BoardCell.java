@@ -3,8 +3,8 @@ package clueGame;
 abstract public class BoardCell {
 	private int row;
 	private int col;
-	public BoardCell() {
-		// TODO Auto-generated constructor stub
+	public BoardCell(){
+		
 	}
 	public boolean isWalkway(){
 		return false;
@@ -15,6 +15,33 @@ abstract public class BoardCell {
 	public boolean isDoorway(){
 		return false;
 	}
+	public int getRow(){
+		return row;
+	}
+	public int getCol(){
+		return col;
+	}
+	public void setRow(int row){
+		this.row=row;
+	}
+	public void setCol(int col){
+		this.col=col;
+	}
 	abstract public void draw();
+	@Override
+	public String toString() {
+		String boardCell="BoardCell [row=" + row + ", col=" + col + "]" + " is a ";
+		if(isWalkway()){
+			boardCell=boardCell.concat("walkway");
+		}else if(isDoorway()){
+			boardCell=boardCell.concat("door");
+		}else if(isRoom()){
+			boardCell=boardCell.concat("room");
+		}else{
+			boardCell=boardCell.concat("undefined");
+		}
+		return boardCell;
+	}
+	
 
 }

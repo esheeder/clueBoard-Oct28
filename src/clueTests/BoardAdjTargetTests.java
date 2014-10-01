@@ -26,8 +26,8 @@ public class BoardAdjTargetTests {
 	{
 		LinkedList<BoardCell> testListH= board.getAdjList(5,5);
 		LinkedList<BoardCell> testListB= board.getAdjList(3,12);
-		LinkedList<BoardCell> testListK= board.getAdjList(0,20);
-		LinkedList<BoardCell> testListL= board.getAdjList(12,17);
+		LinkedList<BoardCell> testListK= board.getAdjList(2,17);
+		LinkedList<BoardCell> testListL= board.getAdjList(13,17);
 		Assert.assertEquals(0, testListH.size());
 		Assert.assertEquals(0, testListB.size());
 		Assert.assertEquals(0, testListK.size());
@@ -38,9 +38,9 @@ public class BoardAdjTargetTests {
 	@Test
 	public void RoomExitAdjacencyTest()
 	{
-		LinkedList<BoardCell> testListOR= board.getAdjList(5, 5);
-		LinkedList<BoardCell> testListSR= board.getAdjList(3, 12);
-		LinkedList<BoardCell> testListSU= board.getAdjList(2, 17);
+		LinkedList<BoardCell> testListOR= board.getAdjList(24, 5);
+		LinkedList<BoardCell> testListSR= board.getAdjList(21, 9);
+		LinkedList<BoardCell> testListSU= board.getAdjList(22, 12);
 		Assert.assertEquals(1, testListOR.size());
 		Assert.assertEquals(1, testListSR.size());
 		Assert.assertEquals(1, testListSU.size());
@@ -57,31 +57,44 @@ public class BoardAdjTargetTests {
 		Assert.assertEquals(4, testList3.size());
 	}
 	@Test
-	public void WalkwayTest()
+	public void EdgeOfBoardAdjacency()
+	{
+		LinkedList<BoardCell> testList1= board.getAdjList(0, 0);
+		LinkedList<BoardCell> testList2= board.getAdjList(28, 0);
+		LinkedList<BoardCell> testList3= board.getAdjList(0, 20);
+		LinkedList<BoardCell> testList4= board.getAdjList(28, 20);
+		Assert.assertEquals(0, testList1.size());
+		Assert.assertEquals(0, testList2.size());
+		Assert.assertEquals(0, testList3.size());
+		Assert.assertEquals(2, testList4.size());
+	}
+	@Test
+	public void WalkwayAdjacencyTest()
 	{	
-		LinkedList<BoardCell> testList1 = board.getAdjList(11, 5);
+		LinkedList<BoardCell> testList1 = board.getAdjList(10, 5);
 		LinkedList<BoardCell> testList2 = board.getAdjList(12, 14);
 		LinkedList<BoardCell> testList3 = board.getAdjList(22, 15);
 		LinkedList<BoardCell> testList4 = board.getAdjList(18, 20);
 		
-		Assert.assertTrue(testList1.contains(board.getCellAt(10, 5)));
-		Assert.assertTrue(testList1.contains(board.getCellAt(11, 6)));
-		Assert.assertTrue(testList1.contains(board.getCellAt(12, 5)));
-		Assert.assertEquals(3, testList1.size());
+		Assert.assertTrue(testList1.contains(board.getCellAt(9, 5)));
+		Assert.assertTrue(testList1.contains(board.getCellAt(10, 6)));
+		Assert.assertTrue(testList1.contains(board.getCellAt(11, 5)));
+		Assert.assertTrue(testList1.contains(board.getCellAt(10, 4)));
+		Assert.assertEquals(4, testList1.size());
 		
 		Assert.assertTrue(testList2.contains(board.getCellAt(12, 15)));
 		Assert.assertTrue(testList2.contains(board.getCellAt(11, 14)));
 		Assert.assertTrue(testList2.contains(board.getCellAt(13, 14)));
-		Assert.assertEquals(3, testList1.size());
+		Assert.assertEquals(3, testList2.size());
 		
 		Assert.assertTrue(testList3.contains(board.getCellAt(21, 15)));
 		Assert.assertTrue(testList3.contains(board.getCellAt(22, 14)));
 		Assert.assertTrue(testList3.contains(board.getCellAt(23, 15)));
-		Assert.assertEquals(3, testList1.size());
+		Assert.assertEquals(3, testList3.size());
 		
 		Assert.assertTrue(testList4.contains(board.getCellAt(19, 20)));
 		Assert.assertTrue(testList4.contains(board.getCellAt(18, 19)));
-		Assert.assertEquals(2, testList1.size());
+		Assert.assertEquals(2, testList4.size());
 	}
 	
 	
