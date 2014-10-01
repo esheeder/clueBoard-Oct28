@@ -152,16 +152,17 @@ public class Board {
 	}
 	public void calcAdjacencies(){
 		int cellNumber = 0;
-		//populate entire adjacency list
-		for(int i=0; i < numCols; i++){
-			for(int j=0; j < numRows; j++){
+		for(int i=0; i < numRows; i++){
+			for(int j=0; j < numCols; j++){
+				//System.out.println("[ " + i + ", " + j + "] " +boardLayout[i][j]);
 				boardCells.put(cellNumber, boardLayout[i][j]);
 				cellNumber++;
 			}
 		}
+		
 		cellNumber=0;
-		for(int i=0; i < numCols; i++){
-			for(int j=0; j < numRows; j++){
+		for(int i=0; i < numRows; i++){
+			for(int j=0; j < numCols; j++){
 				populateAdjMtx(cellNumber, i, j);
 				cellNumber++;
 			}
@@ -176,7 +177,7 @@ public class Board {
 		if(row-1 >= 0 && (boardLayout[row-1][col].isDoorway() || !boardLayout[row-1][col].isRoom()) ){
 			neighbors.add(boardLayout[row-1][col]);
 		}
-		if(col+1 < numRows && (boardLayout[row][col+1].isDoorway() || !boardLayout[row][col+1].isRoom()) ){
+		if(col+1 < numCols && (boardLayout[row][col+1].isDoorway() || !boardLayout[row][col+1].isRoom()) ){
 			neighbors.add(boardLayout[row][col+1]);
 		}
 		if(col-1 >= 0 && (boardLayout[row][col-1].isDoorway() || !boardLayout[row][col-1].isRoom()) ){
