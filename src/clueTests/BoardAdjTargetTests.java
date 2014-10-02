@@ -103,16 +103,16 @@ public class BoardAdjTargetTests {
 	{
 		board.calcTargets(15, 2, 2);
 		Set<BoardCell> targets= board.getTargets();
+		System.out.println("before fail");
+		Assert.assertTrue(targets.contains(board.getCellAt(16, 1)));
 		
-		Assert.assertTrue(targets.contains(board.getCellAt(18, 1)));
-		Assert.assertTrue(targets.contains(board.getCellAt(15, 0)));
+
 		
 		board.calcTargets(15, 2, 3);
 		Set<BoardCell> targets1= board.getTargets();
 		
-		Assert.assertTrue(targets.contains(board.getCellAt(18, 0)));
-		Assert.assertTrue(targets.contains(board.getCellAt(14, 0)));
-		Assert.assertTrue(targets.contains(board.getCellAt(13, 1)));
+		Assert.assertTrue(targets1.contains(board.getCellAt(16, 1)));
+		Assert.assertTrue(targets1.contains(board.getCellAt(16, 0)));
 	}
 	public void testTargetsSixSteps() {
 		board.calcTargets(14, 0, 6);

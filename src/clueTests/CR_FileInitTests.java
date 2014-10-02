@@ -28,7 +28,7 @@ public class CR_FileInitTests {
 	
 	@BeforeClass
 	public static void setUp() {
-		ClueGame game = new ClueGame("CR_ClueLayout.csv", "CR_ClueLegend.txt");
+		ClueGame game = new ClueGame("ClueLayout.csv", "ClueLegend.txt");
 		game.loadConfigFiles();
 		board = game.getBoard();
 	}
@@ -110,7 +110,7 @@ public class CR_FileInitTests {
 	@Test (expected = BadConfigFormatException.class)
 	public void testBadColumns() throws BadConfigFormatException, FileNotFoundException {
 		// overloaded Game ctor takes config file names
-		ClueGame game = new ClueGame("CR_ClueLayoutBadColumns.csv", "CR_ClueLegend.txt");
+		ClueGame game = new ClueGame("ClueLayoutBadColumns.csv", "ClueLegend.txt");
 		// You may change these calls if needed to match your function names
 		// My loadConfigFiles has a try/catch, so I can't call it directly to
 		// see test throwing the BadConfigFormatException
@@ -121,7 +121,7 @@ public class CR_FileInitTests {
 	@Test (expected = BadConfigFormatException.class)
 	public void testBadRoom() throws BadConfigFormatException, FileNotFoundException {
 		// overloaded Board ctor takes config file name
-		ClueGame game = new ClueGame("CR_ClueLayoutBadRoom.csv", "CR_ClueLegend.txt");
+		ClueGame game = new ClueGame("ClueLayoutBadRoom.csv", "ClueLegend.txt");
 		game.loadRoomConfig();
 		game.getBoard().loadBoardConfig();
 	}
@@ -129,7 +129,7 @@ public class CR_FileInitTests {
 	@Test (expected = BadConfigFormatException.class)
 	public void testBadRoomFormat() throws BadConfigFormatException, FileNotFoundException {
 		// overloaded Board ctor takes config file name
-		ClueGame game = new ClueGame("CR_ClueLayout.csv", "CR_ClueLegendBadFormat.txt");
+		ClueGame game = new ClueGame("ClueLayout.csv", "ClueLegendBadFormat.txt");
 		game.loadRoomConfig();
 		game.getBoard().loadBoardConfig();
 	}

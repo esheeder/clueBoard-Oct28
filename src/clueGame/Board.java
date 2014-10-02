@@ -22,6 +22,8 @@ public class Board {
 	private Set<BoardCell> visited;
 	//Map for adj matrix calculations
 	private Map<Integer, LinkedList<BoardCell>> adjMtx;
+	private BoardCell startingCell;
+	private Set<BoardCell> deadEnds = new HashSet<BoardCell>();
 	
 	public Board() {
 		adjMtx= new HashMap<Integer, LinkedList<BoardCell>>();
@@ -146,12 +148,61 @@ public class Board {
 		this.rooms=rooms;
 	}
 	public void calcTargets(int row, int col, int roll) {
-		// TODO Auto-generated method stub
+		
+		if(visited.isEmpty())
+		{
+			startingCell = getCellAt(row, col);
+			targets.clear();
+			deadEnds.clear();
+		}
+		
+		LinkedList<BoardCell> adjCells=getAdjList(row, col);
+		LinkedList<BoardCell> adjList=new LinkedList<BoardCell>();
+		
+		
+		if(adjCells.size() == 1 && roll > 1 )
+		{
+			deadEnds.add(getCellAt(row, col));
+		}
+		
+		
+		for(BoardCell unvisited:adjCells){
+			if(!visited.contains(unvisited) ){
+				
+				adjList.add(unvisited);
+		        if(unvisited.isDoorway())
+		        {
+		        	targets.add(unvisited);
+		        }
+				
+			}
+			
+		}
+		if(roll==1){
+			for(BoardCell targetCells:adjList){
+			    
+				targets.add(targetCells);
+				targets.remove(startingCell);
+				
+			}
+		}else{
+			for(BoardCell tmp:adjList){
+				visited.add(tmp);
+				calcTargets(tmp.getRow(), tmp.getCol(),roll-1);
+				visited.remove(tmp);
+			}
+		}
+		for(BoardCell deadend: deadEnds)
+		{
+			targets.remove(deadend);
+		}
+		
 		
 	}
+	
 	public Set<BoardCell> getTargets() {
 		// TODO Auto-generated method stub
-		return null;
+		return targets;
 	}
 	public LinkedList<BoardCell> getAdjList(int row, int col) {
 		return adjMtx.get(getCellNumber(row,col));

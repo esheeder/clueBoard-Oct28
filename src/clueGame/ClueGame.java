@@ -13,7 +13,10 @@ public class ClueGame {
 	public static String boardLayout;
 	public static String legend;
 	public ClueGame() {
-		// TODO Auto-generated constructor stub
+		rooms=new HashMap<Character, String>();
+		board=new Board();
+		boardLayout="ClueLayout.csv";
+		legend="ClueLegend.txt";
 	}
 	public ClueGame(String boardLayout, String legend) {
 		rooms=new HashMap<Character, String>();

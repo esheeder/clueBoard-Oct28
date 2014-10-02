@@ -15,7 +15,7 @@ public class CR_BoardAdjTargetTests {
 	private static Board board;
 	@BeforeClass
 	public static void setUp() {
-		ClueGame game = new ClueGame("CR_ClueLayout.csv", "CR_ClueLegend.txt");
+		ClueGame game = new ClueGame();
 		game.loadConfigFiles();
 		board = game.getBoard();
 		board.calcAdjacencies();
@@ -301,6 +301,7 @@ public class CR_BoardAdjTargetTests {
 		Assert.assertTrue(targets.contains(board.getCellAt(4, 19)));
 		// Take two steps
 		board.calcTargets(4, 20, 2);
+		System.out.println("last test");
 		targets= board.getTargets();
 		Assert.assertEquals(3, targets.size());
 		Assert.assertTrue(targets.contains(board.getCellAt(3, 19)));
