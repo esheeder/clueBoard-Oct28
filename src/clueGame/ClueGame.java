@@ -15,8 +15,8 @@ public class ClueGame {
 	public ClueGame() {
 		rooms=new HashMap<Character, String>();
 		board=new Board();
-		boardLayout="ClueLayout.csv";
-		legend="ClueLegend.txt";
+		boardLayout="clueBoard/ClueLayout.csv";
+		legend="clueBoard/ClueLegend.txt";
 	}
 	public ClueGame(String boardLayout, String legend) {
 		rooms=new HashMap<Character, String>();

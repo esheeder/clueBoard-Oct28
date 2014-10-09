@@ -33,7 +33,7 @@ public class ConfigInitTests {
 	@BeforeClass
 	public static void testInit(){
 		//Our game is BoardLayout.csv and BoardLegend.txt
-		ClueGame game = new ClueGame("BoardLayout.csv", "BoardLegend.txt");
+		ClueGame game = new ClueGame("clueBoard/BoardLayout.csv", "clueBoard/BoardLegend.txt");
 		game.loadConfigFiles();
 		board = game.getBoard();
 	}
@@ -108,7 +108,7 @@ public class ConfigInitTests {
 	@Test (expected= BadConfigFormatException.class)
 	public void BadConfigColTest() throws BadConfigFormatException, FileNotFoundException{
 		//overload board with bad files
-		ClueGame game = new ClueGame("BadBoardLayout.csv", "BoardLegend.txt");
+		ClueGame game = new ClueGame("clueBoard/BadBoardLayout.csv", "clueBoard/BoardLegend.txt");
 		game.loadRoomConfig();
 		game.getBoard().loadBoardConfig();
 		
@@ -117,14 +117,14 @@ public class ConfigInitTests {
 	@Test (expected= BadConfigFormatException.class)
 	public void BadConfigRoomTest() throws BadConfigFormatException, FileNotFoundException{
 		//overload board with bad files
-		ClueGame game = new ClueGame("BadBoardRoom.csv", "BoardLegend.txt");
+		ClueGame game = new ClueGame("clueBoard/BadBoardRoom.csv", "clueBoard/BoardLegend.txt");
 		game.loadRoomConfig();
 		game.getBoard().loadBoardConfig();
 	}
 	@Test (expected= BadConfigFormatException.class)
 	public void BadConfigLegendTest() throws BadConfigFormatException, FileNotFoundException{
 		//overload board with bad files
-		ClueGame game = new ClueGame("BoardLayout.csv", "BadBoardLegend.txt");
+		ClueGame game = new ClueGame("clueBoard/BoardLayout.csv", "clueBoard/BadBoardLegend.txt");
 		game.loadRoomConfig();
 		game.getBoard().loadBoardConfig();
 	
