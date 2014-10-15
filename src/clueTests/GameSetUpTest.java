@@ -134,5 +134,35 @@ public class GameSetUpTest {
 			assertEquals("pipe", cards.get(6).getName());
 			assertEquals("WEAPON", cards.get(6).getCardType());
 		}
+		
+	// Test the deal
+		@Test
+		public void validDealTest() {
+			int cardsLeft = cards.size();
+			int playerCards = cards.size() / 6;
+			int extraCards = 1; // players have within 1 card of other players
+			
+			// all cards are dealt test
+			assertEquals(0, cardsLeft);
+			
+			// players have roughly same number of cards
+			assertEquals(playerCards, players.get(0).getMyCards().size(), extraCards);
+			assertEquals(playerCards, players.get(1).getMyCards().size(), extraCards);
+			assertEquals(playerCards, players.get(2).getMyCards().size(), extraCards);
+			assertEquals(playerCards, players.get(3).getMyCards().size(), extraCards);
+			assertEquals(playerCards, players.get(4).getMyCards().size(), extraCards);
+			assertEquals(playerCards, players.get(5).getMyCards().size(), extraCards);
+			
+			// one card is not given to more than one player
+			Card card = new Card("P","mrs peacock");
+			assertTrue(players.get(0).getMyCards().contains(card));
+			assertFalse(players.get(1).getMyCards().contains(card));
+			assertFalse(players.get(2).getMyCards().contains(card));
+			assertFalse(players.get(2).getMyCards().contains(card));
+			assertFalse(players.get(4).getMyCards().contains(card));
+			assertFalse(players.get(5).getMyCards().contains(card));
+			
+			
+		}
 
 }
