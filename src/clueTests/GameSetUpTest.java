@@ -29,6 +29,7 @@ public class GameSetUpTest {
 	public void setUp() {
 		board = new Board();
 		players = new ArrayList<Player>();
+		cards = new ArrayList<Card>();
 		
 		// load players
 		FileReader reader= null;
@@ -57,32 +58,26 @@ public class GameSetUpTest {
 		}
 		
 		// load cards
-		cards = new ArrayList<Card>();
-
-		
-		reader= null;
-		in = null;
-		line = null;
+		FileReader reader2 = null;
+		Scanner in2 = null;
+		String line2 = null;
 		try{
-			reader = new FileReader("clueBoard/Cards.csv");
-			in = new Scanner(reader);
+			reader2 = new FileReader("clueBoard/Cards.csv");
+			in2 = new Scanner(reader2);
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
 		}
 		
-		while(in.hasNextLine()) {
-			line = in.nextLine();
-			String [] entireline = line.split(",");
+		while(in2.hasNextLine()) {
+			line2 = in2.nextLine();
+			String [] entireline = line2.split(",");
 			
-			if(entireline[0].equals("H")) {
-				HumanPlayer h = new HumanPlayer(entireline[1], entireline[2], Integer.parseInt(entireline[3]),Integer.parseInt(entireline[4]));
-				players.add(h);
-			}
-			else {
-				ComputerPlayer c = new ComputerPlayer(entireline[1], entireline[2], Integer.parseInt(entireline[3]),Integer.parseInt(entireline[4]));
-				players.add(c);
-			}
+			if(entireline[0].equals("P")) numOfPlayers++;
+			if(entireline[0].equals("W")) numOfWeapons++;
+			if(entireline[0].equals("R")) numOfRooms++;
 			
+			Card card = new Card(entireline[0],entireline[1]);
+			cards.add(card);
 		}
 		
 	}
@@ -113,7 +108,7 @@ public class GameSetUpTest {
 	}
 	
 	// Load the cards from: 'Cards.csv'
-		// format: H/C, name, color, x, y
+		// format: P/W/R, name
 		@Test
 		public void loadCardsTest() {
 			
@@ -127,13 +122,17 @@ public class GameSetUpTest {
 			assertEquals(6, numOfWeapons);
 			
 			// test the number of rooms
-			assertEquals(6, numOfRooms);
+			assertEquals(9, numOfRooms);
 			
 			// test deck for a card
-			assertTrue(cards.contains(Card("W","pipe")));
-			assertTrue(cards.contains(Card("P","mrs peacock")));
-			assertTrue(cards.contains(Card("R","kitchen")));
-			
+			assertEquals("mrs peacock", cards.get(0).getName());
+			assertEquals("mrs white", cards.get(1).getName());
+			assertEquals("PERSON", cards.get(0).getCardType());
+			assertEquals("PERSON", cards.get(1).getCardType());
+			assertEquals("kitchen", cards.get(12).getName());
+			assertEquals("ROOM", cards.get(12).getCardType());
+			assertEquals("pipe", cards.get(6).getName());
+			assertEquals("WEAPON", cards.get(6).getCardType());
 		}
 
 }
