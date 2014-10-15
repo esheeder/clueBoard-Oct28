@@ -65,5 +65,21 @@ public class ClueGame {
 		}
 		board.setRooms(rooms);
 	}
+	
+	public void deal() {
+		
+	}
+	
+	public void selectAnswer() {
+		
+	}
+	
+	public void handleSuggestion(String person, String room, String weapon, Player accusingPerson) {
+		
+	}
+	
+	public Boolean checkAccusation(Solution solution) {
+		return false;
+	}
 
 }

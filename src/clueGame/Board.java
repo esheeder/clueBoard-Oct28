@@ -288,6 +288,18 @@ public class Board {
 		}
 		adjMtx.put(cellNum, adjCells);
 	}
+	
+	
+	
+	public void startTarget(int row, int col, int numSteps) {
+		
+	}
+
+	
+	
+	
+	
+	
 	//TEMPORARY
 	public static void main(String[] args){
 		ClueGame game=new ClueGame("BoardLayout.csv","BoardLegend.txt");
