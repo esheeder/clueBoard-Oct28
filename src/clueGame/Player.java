@@ -14,8 +14,6 @@ public class Player {
 	
 	public Player(String playerName, String playerColor, int playerX, int playerY) {
 		name = playerName;
-		//java.lang.reflect.Field field = Color.class.getField(playerColor);
-		//color = (Color)field.get(null);
 		
 		switch(playerColor) {
 		case "magenta":
@@ -40,6 +38,7 @@ public class Player {
 		
 		x = playerX;
 		y = playerY;
+
 	}
 	
 	public Card disproveSuggestion(String person, String room, String weapon) {
@@ -65,6 +64,10 @@ public class Player {
 
 	public ArrayList<Card> getMyCards() {
 		return myCards;
+	}
+	
+	public void setMyCards(Card card) {
+		myCards.add(card);
 	}
 	
 	

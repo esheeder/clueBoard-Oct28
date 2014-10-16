@@ -85,7 +85,7 @@ public class ClueGame {
 		for(int i = 0; i < cards.size(); i++) {
 			if(playerNum < 6) {
 				System.out.println("player: " + players.get(playerNum).getName() + " gets a card");
-				players.get(playerNum).getMyCards().add(cards.get(i));
+				players.get(playerNum).setMyCards(cards.get(i));
 			}
 			else playerNum = 0;
 			playerNum++;
