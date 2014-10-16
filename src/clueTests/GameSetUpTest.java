@@ -13,73 +13,34 @@ import org.junit.Test;
 
 import clueGame.Board;
 import clueGame.Card;
+import clueGame.ClueGame;
 import clueGame.ComputerPlayer;
 import clueGame.HumanPlayer;
 import clueGame.Player;
 
 public class GameSetUpTest {
-	private static Board board;
+	private static ClueGame game;
 	private static ArrayList<Player> players; 
 	private static ArrayList<Card> cards;
-	private int numOfPlayers = 0;
-	private int numOfWeapons = 0;
-	private int numOfRooms = 0;
+	private int numOfPlayers;
+	private int numOfWeapons;
+	private int numOfRooms;
 	// set up the board and a variety of cards
 	@Before
 	public void setUp() {
-		board = new Board();
-		players = new ArrayList<Player>();
-		cards = new ArrayList<Card>();
+		game = new ClueGame();
 		
 		// load players
-		FileReader reader= null;
-		Scanner in = null;
-		String line = null;
-		try{
-			reader = new FileReader("clueBoard/Players.csv");
-			in = new Scanner(reader);
-		}catch(FileNotFoundException e){
-			System.out.println(e.getLocalizedMessage());
-		}
-		
-		while(in.hasNextLine()) {
-			line = in.nextLine();
-			String [] entireline = line.split(",");
-			
-			if(entireline[0].equals("H")) {
-				HumanPlayer h = new HumanPlayer(entireline[1], entireline[2], Integer.parseInt(entireline[3]),Integer.parseInt(entireline[4]));
-				players.add(h);
-			}
-			else {
-				ComputerPlayer c = new ComputerPlayer(entireline[1], entireline[2], Integer.parseInt(entireline[3]),Integer.parseInt(entireline[4]));
-				players.add(c);
-			}
-			
-		}
+		game.loadPlayers();
+		players = game.getPlayers();
 		
 		// load cards
-		FileReader reader2 = null;
-		Scanner in2 = null;
-		String line2 = null;
-		try{
-			reader2 = new FileReader("clueBoard/Cards.csv");
-			in2 = new Scanner(reader2);
-		}catch(FileNotFoundException e){
-			System.out.println(e.getLocalizedMessage());
-		}
-		
-		while(in2.hasNextLine()) {
-			line2 = in2.nextLine();
-			String [] entireline = line2.split(",");
-			
-			if(entireline[0].equals("P")) numOfPlayers++;
-			if(entireline[0].equals("W")) numOfWeapons++;
-			if(entireline[0].equals("R")) numOfRooms++;
-			
-			Card card = new Card(entireline[0],entireline[1]);
-			cards.add(card);
-		}
-		
+		game.loadCards();
+		cards = game.getCards();
+		numOfPlayers = game.getNumOfPlayers();
+		numOfWeapons = game.getNumOfWeapons();
+		numOfRooms = game.getNumOfRooms();
+
 	}
 
 	
@@ -141,6 +102,8 @@ public class GameSetUpTest {
 			int cardsLeft = cards.size();
 			int playerCards = cards.size() / 6;
 			int extraCards = 1; // players have within 1 card of other players
+			
+			game.deal();
 			
 			// all cards are dealt test
 			assertEquals(0, cardsLeft);
