@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 
 public class ClueGame {
@@ -14,17 +15,17 @@ public class ClueGame {
 	private ArrayList<Card> cards;
 	private ArrayList<Player> players;
 	private Board board;
+	private Solution solution;
 	private int numOfPlayers = 0;
 	private int numOfWeapons = 0;
 	private int numOfRooms = 0;
-	private int cardsLeft = 21;
+	private int cardsLeft; 
 
 	public static String boardLayout;
 	public static String legend;
 	public ClueGame() {
 		rooms=new HashMap<Character, String>();
 		board=new Board();
-
 		boardLayout="clueBoard/ClueLayout.csv";
 		legend="clueBoard/ClueLegend.txt";
 	}
@@ -77,8 +78,19 @@ public class ClueGame {
 	}
 	
 	public void deal() {
+		Random rn = new Random();
+		solution = new Solution();
+		int p = rn.nextInt(6);
+		int w = rn.nextInt(6) + 6;
+		int r = rn.nextInt(9) + 12;
+		solution.person = cards.get(p).getName();
+		solution.weapon = cards.get(w).getName();
+		solution.room = cards.get(r).getName();
 		
-		System.out.println("deal: ");
+		cards.remove(p);
+		cards.remove(w);
+		cards.remove(r);
+		cardsLeft = cards.size();
 		Collections.shuffle(cards);
 		Collections.shuffle(players);
 		int playerNum = 0;
@@ -86,23 +98,25 @@ public class ClueGame {
 			if(playerNum >= 6) {
 				playerNum = 0;
 			}
-			System.out.println("player: " + players.get(playerNum).getName() + " gets a card " + (i+1));
 			players.get(playerNum).setMyCards(cards.get(i));
 			playerNum++;
 			cardsLeft--;
 		}
 	}
+
 	
-	public void selectAnswer() {
-		
-	}
-	
-	public void handleSuggestion(String person, String room, String weapon, Player accusingPerson) {
-		
-	}
-	
-	public Boolean checkAccusation(Solution solution) {
-		return false;
+	public Boolean checkAccusation(Solution accusation) {
+
+		if(!solution.person.equals(accusation.person)) {
+			return false;
+		}
+		else if(!solution.room.equals(accusation.room)) {
+			return false;
+		}
+		else if(!solution.weapon.equals(accusation.weapon)) {
+			return false;
+		}
+		return true;
 	}
 	
 	public void loadCards() {
@@ -159,6 +173,16 @@ public class ClueGame {
 			
 		}
 	}
+	
+	
+	public void selectAnswer() {
+		
+	}
+	
+	public void handleSuggestion(String person, String room, String weapon, Player accusingPerson) {
+		
+	}
+	
 	public ArrayList<Card> getCards() {
 		return cards;
 	}
@@ -166,6 +190,9 @@ public class ClueGame {
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
+	
+	
+	// getters
 
 	public int getNumOfPlayers() {
 		return numOfPlayers;
@@ -175,17 +202,17 @@ public class ClueGame {
 	}
 	public int getNumOfRooms() {
 		return numOfRooms;
-	}
-	
+	}	
 	public int getCardsLeft() {
 		return cardsLeft;
 	}
 	
-	public static void main(String[] args) {
-		ClueGame game = new ClueGame();
-		game.loadCards();
-		game.loadPlayers();
-		game.deal();
+	// set an answer for testing
+	public void setAnswer() {
+		solution = new Solution();
+		solution.person = "mrs peacock";
+		solution.weapon = "candle stick";
+		solution.room = "kitchen";
 	}
 
 }

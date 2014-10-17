@@ -11,10 +11,7 @@ public class Player {
 	private int x;
 	private int y;
 	private ArrayList<Card> myCards;
-	
-	public Player() {
-		
-	}
+
 	
 	public Player(String playerName, String playerColor, int playerX, int playerY) {
 		name = playerName;
