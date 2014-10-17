@@ -99,14 +99,13 @@ public class GameSetUpTest {
 	// Test the deal
 		@Test
 		public void validDealTest() {
-			int cardsLeft = cards.size();
 			int playerCards = cards.size() / 6;
 			int extraCards = 1; // players have within 1 card of other players
 			
 			game.deal();
 			
 			// all cards are dealt test
-			assertEquals(0, cardsLeft);
+			assertEquals(0, game.getCardsLeft());
 			
 			// players have roughly same number of cards
 			assertEquals(playerCards, players.get(0).getMyCards().size(), extraCards);
@@ -117,13 +116,12 @@ public class GameSetUpTest {
 			assertEquals(playerCards, players.get(5).getMyCards().size(), extraCards);
 			
 			// one card is not given to more than one player
-			Card card = new Card("P","mrs peacock");
-			assertTrue(players.get(0).getMyCards().contains(card)); // contains the card
-			assertFalse(players.get(1).getMyCards().contains(card)); // doesn't contain the card
-			assertFalse(players.get(2).getMyCards().contains(card));
-			assertFalse(players.get(2).getMyCards().contains(card));
-			assertFalse(players.get(4).getMyCards().contains(card));
-			assertFalse(players.get(5).getMyCards().contains(card));
+			assertTrue(players.get(0).getMyCards().contains(players.get(0).getMyCards().get(0))); // contains the card
+			assertFalse(players.get(1).getMyCards().contains(players.get(0).getMyCards().get(0))); // doesn't contain the card
+			assertFalse(players.get(2).getMyCards().contains(players.get(0).getMyCards().get(0)));
+			assertFalse(players.get(2).getMyCards().contains(players.get(0).getMyCards().get(0)));
+			assertFalse(players.get(4).getMyCards().contains(players.get(0).getMyCards().get(0)));
+			assertFalse(players.get(5).getMyCards().contains(players.get(0).getMyCards().get(0)));
 			
 			
 		}

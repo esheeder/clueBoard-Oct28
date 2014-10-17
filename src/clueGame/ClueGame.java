@@ -17,14 +17,14 @@ public class ClueGame {
 	private int numOfPlayers = 0;
 	private int numOfWeapons = 0;
 	private int numOfRooms = 0;
+	private int cardsLeft = 21;
 
 	public static String boardLayout;
 	public static String legend;
 	public ClueGame() {
 		rooms=new HashMap<Character, String>();
 		board=new Board();
-		cards = new ArrayList<Card>();
-		players = new ArrayList<Player>();
+
 		boardLayout="clueBoard/ClueLayout.csv";
 		legend="clueBoard/ClueLegend.txt";
 	}
@@ -77,18 +77,19 @@ public class ClueGame {
 	}
 	
 	public void deal() {
-		getCards();
-		getPlayers();
-		//Collections.shuffle(cards);
-		//Collections.shuffle(players);
+		
+		System.out.println("deal: ");
+		Collections.shuffle(cards);
+		Collections.shuffle(players);
 		int playerNum = 0;
-		for(int i = 0; i < cards.size(); i++) {
-			if(playerNum < 6) {
-				System.out.println("player: " + players.get(playerNum).getName() + " gets a card");
-				players.get(playerNum).setMyCards(cards.get(i));
+		for(int i = 0; i < getCards().size(); i++) {
+			if(playerNum >= 6) {
+				playerNum = 0;
 			}
-			else playerNum = 0;
+			System.out.println("player: " + players.get(playerNum).getName() + " gets a card " + (i+1));
+			players.get(playerNum).setMyCards(cards.get(i));
 			playerNum++;
+			cardsLeft--;
 		}
 	}
 	
@@ -105,7 +106,7 @@ public class ClueGame {
 	}
 	
 	public void loadCards() {
-		
+		cards = new ArrayList<Card>();
 		FileReader reader2 = null;
 		Scanner in2 = null;
 		String line2 = null;
@@ -130,6 +131,8 @@ public class ClueGame {
 	}
 	
 	public void loadPlayers() {
+		
+		players = new ArrayList<Player>();
 		
 		FileReader reader= null;
 		Scanner in = null;
@@ -172,6 +175,17 @@ public class ClueGame {
 	}
 	public int getNumOfRooms() {
 		return numOfRooms;
+	}
+	
+	public int getCardsLeft() {
+		return cardsLeft;
+	}
+	
+	public static void main(String[] args) {
+		ClueGame game = new ClueGame();
+		game.loadCards();
+		game.loadPlayers();
+		game.deal();
 	}
 
 }

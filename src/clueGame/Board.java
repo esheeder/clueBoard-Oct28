@@ -295,24 +295,7 @@ public class Board {
 		
 	}
 
-	
-	
-	
-	
-	
-	//TEMPORARY
-	public static void main(String[] args){
-		ClueGame game=new ClueGame("BoardLayout.csv","BoardLegend.txt");
-		game.loadConfigFiles();
-		Board board=game.getBoard();
-		board.calcAdjacencies();
-		LinkedList<BoardCell> adjCells=board.getAdjList(3,12);
-		System.out.println(board.getCellAt(3,12));
-		System.out.println(adjCells.size());
-		for(BoardCell cell:adjCells){
-			System.out.println(cell);
-		}
-	}
+
 }
 /* REFERENCE TO WORK WITH FORM CLUE PATHS
 private Map<Integer, LinkedList<BoardCell>> adjMtx;

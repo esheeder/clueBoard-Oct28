@@ -12,9 +12,13 @@ public class Player {
 	private int y;
 	private ArrayList<Card> myCards;
 	
+	public Player() {
+		
+	}
+	
 	public Player(String playerName, String playerColor, int playerX, int playerY) {
 		name = playerName;
-		
+		myCards = new ArrayList<Card>();
 		switch(playerColor) {
 		case "magenta":
 			color = Color.magenta;
