@@ -2,6 +2,8 @@ package clueTests;
 
 import static org.junit.Assert.*;
 
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +25,7 @@ public class GameActionTests {
 	public void setUp() {
 		accusationCorrect = new Solution();
 		accusationIncorrect = new Solution();
-		game = new ClueGame();
+		game = new ClueGame("BoardLayout.csv", "BoardLegend.txt");
 		game.loadCards();
 		game.loadPlayers();
 		game.deal();
@@ -67,41 +69,44 @@ public class GameActionTests {
 		game = new ClueGame();
 		game.loadConfigFiles();
 		player = new ComputerPlayer();
-		board = new Board();
+		board = game.getBoard();
+		board.calcAdjacencies();
 		
 		
 		// RANDOM CHOICE TESTS
 		// Location with no rooms in target, 5 targets
-		board.calcTargets(0, 14, 2);
-		int loc_0_12_Tot = 0;
-		int loc_0_16_Tot = 0;
-		int loc_1_15_Tot = 0;
-		int loc_2_14_Tot = 0;
-		int loc_1_13_Tot = 0;
+		board.calcTargets(14, 0, 2);
+		Set<BoardCell> targets= board.getTargets();
+		
+		int loc_12_0_Tot = 0;
+		int loc_16_0_Tot = 0;
+		int loc_15_1_Tot = 0;
+		int loc_14_2_Tot = 0;
+		int loc_13_1_Tot = 0;
 		
 		// Run the test 100 times
 		for(int i = 0; i < 100; i++) {
 			BoardCell selected = player.pickLocation(board.getTargets());
-			if(selected == board.getCellAt(0, 12)) loc_0_12_Tot++;
-			else if(selected == board.getCellAt(0, 16)) loc_0_16_Tot++;
-			else if(selected == board.getCellAt(1, 15)) loc_1_15_Tot++;
-			else if(selected == board.getCellAt(2, 14)) loc_2_14_Tot++;
-			else if(selected == board.getCellAt(1, 13)) loc_1_13_Tot++;
+			if(selected == board.getCellAt(12, 0)) loc_12_0_Tot++;
+			else if(selected == board.getCellAt(16, 0)) loc_16_0_Tot++;
+			else if(selected == board.getCellAt(15, 1)) loc_15_1_Tot++;
+			else if(selected == board.getCellAt(14, 2)) loc_14_2_Tot++;
+			else if(selected == board.getCellAt(13, 1)) loc_13_1_Tot++;
 			else {
 				fail("Invalid target selected");
 			}
 		}
 		
 		// Ensure we have 100 total selections
-		int selectionsTot = loc_0_12_Tot + loc_0_16_Tot + loc_1_15_Tot + loc_2_14_Tot + loc_1_13_Tot;
+		int selectionsTot = loc_12_0_Tot + loc_16_0_Tot + loc_15_1_Tot + loc_14_2_Tot + loc_13_1_Tot;
 		assertEquals(100, selectionsTot);
 		
 		// Ensure each target was selected more than once
-		assertTrue(loc_0_12_Tot > 1);
-		assertTrue(loc_0_16_Tot > 1);
-		assertTrue(loc_1_15_Tot > 1);
-		assertTrue(loc_1_13_Tot > 1);
-		assertTrue(loc_2_14_Tot > 1);
+		assertTrue(loc_12_0_Tot > 1);
+		assertTrue(loc_16_0_Tot > 1);
+		assertTrue(loc_15_1_Tot > 1);
+		assertTrue(loc_14_2_Tot > 1);
+		assertTrue(loc_13_1_Tot > 1);
 		
 		
 		// ROOM PREFERENCE TESTS

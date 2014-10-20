@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.text.Format.Field;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 public class Player {
 
 	private String name;
@@ -47,8 +48,17 @@ public class Player {
 	}
 	
 	public Card disproveSuggestion(String person, String room, String weapon) {
-		Card card = new Card("","");
-		return card;
+		ArrayList<Card> testCards = new ArrayList<Card>();
+		for (Card c : myCards) {
+			if (c.getName().equals(person) || c.getName().equals(room) || c.getName().equals(weapon)) {
+				testCards.add(c);
+			}
+		}
+		if (testCards.size() > 0) {
+			Random rn = new Random();
+			return testCards.get(rn.nextInt(testCards.size() - 1));
+		}
+		return null;
 	}
 
 	public String getName() {

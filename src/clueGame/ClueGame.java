@@ -26,8 +26,8 @@ public class ClueGame {
 	public ClueGame() {
 		rooms=new HashMap<Character, String>();
 		board=new Board();
-		boardLayout="clueBoard/ClueLayout.csv";
-		legend="clueBoard/ClueLegend.txt";
+		boardLayout="ClueLayout.csv";
+		legend="ClueLegend.txt";
 	}
 	public ClueGame(String boardLayout, String legend) {
 		rooms=new HashMap<Character, String>();
@@ -87,9 +87,9 @@ public class ClueGame {
 		solution.weapon = cards.get(w).getName();
 		solution.room = cards.get(r).getName();
 		
-		cards.remove(p);
-		cards.remove(w);
 		cards.remove(r);
+		cards.remove(w);
+		cards.remove(p);
 		cardsLeft = cards.size();
 		Collections.shuffle(cards);
 		Collections.shuffle(players);
@@ -125,7 +125,7 @@ public class ClueGame {
 		Scanner in2 = null;
 		String line2 = null;
 		try{
-			reader2 = new FileReader("clueBoard/Cards.csv");
+			reader2 = new FileReader("Cards.csv");
 			in2 = new Scanner(reader2);
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
@@ -152,7 +152,7 @@ public class ClueGame {
 		Scanner in = null;
 		String line = null;
 		try{
-			reader = new FileReader("clueBoard/Players.csv");
+			reader = new FileReader("Players.csv");
 			in = new Scanner(reader);
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
