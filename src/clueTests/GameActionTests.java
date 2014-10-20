@@ -110,8 +110,16 @@ public class GameActionTests {
 		
 		
 		// ROOM PREFERENCE TESTS
-
+		board.calcTargets(10, 3, 2);
+		targets = board.getTargets();
 		
+		int counter = 0;
+		for(int i = 0; i < 100; i++) {
+			BoardCell selected = player.pickLocation(board.getTargets());
+			if(!(selected == board.getCellAt(11, 2))) fail("Invalid target selected");
+			else counter++;
+		}
+		assertEquals(counter, 100);
 		
 			
 	}
