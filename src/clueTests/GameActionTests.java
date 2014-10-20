@@ -64,8 +64,11 @@ public class GameActionTests {
 	@Test
 	public void testTargetLocation() {
 		
+		game = new ClueGame();
+		game.loadConfigFiles();
 		player = new ComputerPlayer();
 		board = new Board();
+		
 		
 		// RANDOM CHOICE TESTS
 		// Location with no rooms in target, 5 targets
