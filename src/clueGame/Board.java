@@ -196,17 +196,21 @@ public class Board {
 		{
 			targets.remove(deadend);
 		}
-		
-		
 	}
 	
 	public Set<BoardCell> getTargets() {
-		// TODO Auto-generated method stub
-		return targets;
+		Set<BoardCell> copyTargets = new HashSet<BoardCell>();
+		for(BoardCell b : targets) {
+			copyTargets.add(b);
+		}
+		targets.clear();
+		return copyTargets;
 	}
+	
 	public LinkedList<BoardCell> getAdjList(int row, int col) {
 		return adjMtx.get(getCellNumber(row,col));
 	}
+	
 	public void calcAdjacencies(){
 		int cellNumber = 0;
 		cellNumber=0;
@@ -244,7 +248,7 @@ public class Board {
 					RoomCell room=(RoomCell)boardLayout[row+1][col];
 					if(room.getDoorDirection()==RoomCell.DoorDirection.UP){
 						neighbors.add(boardLayout[row+1][col]);
-					}else{}
+					}
 				}else{
 					neighbors.add(boardLayout[row+1][col]);
 				}
@@ -255,7 +259,7 @@ public class Board {
 					RoomCell room=(RoomCell)boardLayout[row-1][col];
 					if(room.getDoorDirection()==RoomCell.DoorDirection.DOWN){
 						neighbors.add(boardLayout[row-1][col]);
-					}else{}
+					}
 				}else{
 					neighbors.add(boardLayout[row-1][col]);
 				}
@@ -266,7 +270,7 @@ public class Board {
 					RoomCell room=(RoomCell)boardLayout[row][col+1];
 					if(room.getDoorDirection()==RoomCell.DoorDirection.LEFT){
 						neighbors.add(boardLayout[row][col+1]);
-					}else{}
+					}
 				}else{
 					neighbors.add(boardLayout[row][col+1]);
 				}
@@ -277,7 +281,7 @@ public class Board {
 					RoomCell room=(RoomCell)boardLayout[row][col-1];
 					if(room.getDoorDirection()==RoomCell.DoorDirection.RIGHT){
 						neighbors.add(boardLayout[row][col-1]);
-					}else{}
+					}
 				}else{
 					neighbors.add(boardLayout[row][col-1]);
 				}
@@ -288,12 +292,7 @@ public class Board {
 		}
 		adjMtx.put(cellNum, adjCells);
 	}
-	
-	
-	
-	public void startTarget(int row, int col, int numSteps) {
-		
-	}
+
 
 
 }

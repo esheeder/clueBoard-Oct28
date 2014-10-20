@@ -191,6 +191,11 @@ public class ClueGame {
 		return players;
 	}
 	
+	//Used for testing
+	public void setPlayers(ArrayList<Player> somePlayers) {
+		players = somePlayers;
+	}
+	
 	
 	// getters
 

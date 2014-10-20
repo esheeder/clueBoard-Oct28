@@ -31,6 +31,9 @@ public class GameActionTests {
 		accusationCorrect = new Solution();
 		accusationIncorrect = new Solution();
 		game = new ClueGame("BoardLayout.csv", "BoardLegend.txt");
+		game.loadConfigFiles();
+		board = game.getBoard();
+		board.calcAdjacencies();
 		game.loadCards();
 		game.loadPlayers();
 	}
@@ -70,66 +73,89 @@ public class GameActionTests {
 	@Test
 	public void testTargetLocation() {
 		
-		game = new ClueGame();
-		game.loadConfigFiles();
 		player = new ComputerPlayer();
-		board = game.getBoard();
-		board.calcAdjacencies();
+		
 		
 		
 		// RANDOM CHOICE TESTS
 		// Location with no rooms in target, 5 targets
-		board.calcTargets(14, 0, 2);
+		board.calcTargets(13, 0, 2);
 		Set<BoardCell> targets= board.getTargets();
 		
-		for (BoardCell b: targets) {
-			System.out.println(b.getCol() + " " + b.getRow());
-		}
-		
-		int loc_12_0_Tot = 0;
-		int loc_16_0_Tot = 0;
-		int loc_15_1_Tot = 0;
-		int loc_14_2_Tot = 0;
-		int loc_13_1_Tot = 0;
+		int loc_11_0_Tot = 0;
+		int loc_15_0_Tot = 0;
+		int loc_14_1_Tot = 0;
+		int loc_13_2_Tot = 0;
+		int loc_12_1_Tot = 0;
 		
 		// Run the test 100 times
 		for(int i = 0; i < 100; i++) {
 			BoardCell selected = player.pickLocation(targets);
-			if(selected == board.getCellAt(12, 0)) loc_12_0_Tot++;
-			else if(selected == board.getCellAt(16, 0)) loc_16_0_Tot++;
-			else if(selected == board.getCellAt(15, 1)) loc_15_1_Tot++;
-			else if(selected == board.getCellAt(14, 2)) loc_14_2_Tot++;
-			else if(selected == board.getCellAt(13, 1)) loc_13_1_Tot++;
+			if(selected == board.getCellAt(11, 0)) loc_11_0_Tot++;
+			else if(selected == board.getCellAt(15, 0)) loc_15_0_Tot++;
+			else if(selected == board.getCellAt(14, 1)) loc_14_1_Tot++;
+			else if(selected == board.getCellAt(13, 2)) loc_13_2_Tot++;
+			else if(selected == board.getCellAt(12, 1)) loc_12_1_Tot++;
 			else {
 				fail("Invalid target selected");
 			}
 		}
 		
 		// Ensure we have 100 total selections
-		int selectionsTot = loc_12_0_Tot + loc_16_0_Tot + loc_15_1_Tot + loc_14_2_Tot + loc_13_1_Tot;
+		int selectionsTot = loc_11_0_Tot + loc_15_0_Tot + loc_14_1_Tot + loc_13_2_Tot + loc_12_1_Tot;
 		assertEquals(100, selectionsTot);
 		
 		// Ensure each target was selected more than once
-		System.out.println(loc_12_0_Tot + " " + loc_16_0_Tot + " " + loc_15_1_Tot + " " + loc_14_2_Tot + " " + loc_13_1_Tot);
-		assertTrue(loc_12_0_Tot > 1);
-		assertTrue(loc_15_1_Tot > 1);
-		assertTrue(loc_14_2_Tot > 1);
-		assertTrue(loc_16_0_Tot > 1);
-		assertTrue(loc_13_1_Tot > 1);
+		assertTrue(loc_11_0_Tot > 1);
+		assertTrue(loc_14_1_Tot > 1);
+		assertTrue(loc_13_2_Tot > 1);
+		assertTrue(loc_15_0_Tot > 1);
+		assertTrue(loc_12_1_Tot > 1);
 		
 		
 		// ROOM PREFERENCE TESTS
 		board.calcTargets(10, 3, 2);
-		targets = board.getTargets();
-		
+		targets = board.getTargets();;
 		int counter = 0;
 		for(int i = 0; i < 100; i++) {
-			BoardCell selected = player.pickLocation(board.getTargets());
-			if(!(selected == board.getCellAt(11, 2))) fail("Invalid target selected");
-			else counter++;
+			BoardCell selected = player.pickLocation(targets);
+			if(selected == board.getCellAt(11, 2) || selected == board.getCellAt(10, 2)) counter++;
+			else fail("Invalid target selected");
 		}
 		assertEquals(counter, 100);
 		
+		//Considers the last room visited test
+		//This test is a repeat of the previous test, but now our last visited room is the Billiard room we are right next to
+		player.setLastRoomVisited('R');
+		
+		int loc_10_2_Tot = 0;
+		int loc_11_2_Tot = 0;
+		int loc_8_3_Tot = 0;
+		int loc_12_3_Tot = 0;
+		int loc_10_5_Tot = 0;
+		int loc_9_4_Tot = 0;
+		
+		// Run the test 100 times
+		for(int i = 0; i < 100; i++) {
+			BoardCell selected = player.pickLocation(targets);
+			if(selected == board.getCellAt(10, 2)) loc_10_2_Tot++;
+			else if(selected == board.getCellAt(11, 2)) loc_11_2_Tot++;
+			else if(selected == board.getCellAt(8, 3)) loc_8_3_Tot++;
+			else if(selected == board.getCellAt(12, 3)) loc_12_3_Tot++;
+			else if(selected == board.getCellAt(10, 5)) loc_10_5_Tot++;
+			else if(selected == board.getCellAt(9, 4)) loc_9_4_Tot++;
+			else {
+				fail("Invalid target selected");
+			}
+		}
+		
+		// Ensure each target was selected more than once
+		assertTrue(loc_10_2_Tot > 1);
+		assertTrue(loc_11_2_Tot > 1);
+		assertTrue(loc_8_3_Tot > 1);
+		assertTrue(loc_12_3_Tot > 1);
+		assertTrue(loc_10_5_Tot > 1);
+		assertTrue(loc_9_4_Tot > 1);
 			
 	}
 	

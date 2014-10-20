@@ -14,7 +14,7 @@ public class Player {
 	private ArrayList<Card> myCards;
 	
 	public Player() {
-		
+		myCards = new ArrayList<Card>();
 	}
 
 	
@@ -56,7 +56,7 @@ public class Player {
 		}
 		if (testCards.size() > 0) {
 			Random rn = new Random();
-			return testCards.get(rn.nextInt(testCards.size() - 1));
+			return testCards.get(rn.nextInt(testCards.size()));
 		}
 		return null;
 	}
