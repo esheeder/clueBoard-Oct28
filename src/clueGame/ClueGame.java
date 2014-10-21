@@ -181,7 +181,23 @@ public class ClueGame {
 	
 	public Card handleSuggestion(String person, String room, String weapon, Player accusingPerson) {
 		
+		//Start at the next person in the array and go to the end
+		for (int i = players.indexOf(accusingPerson) + 1; i < players.size(); i++) {
+			Card c = players.get(i).disproveSuggestion(person, room, weapon);
+			if (c != null) {
+				return c;
+			}
+		}
 		
+		//If we didn't find anything, start back at the beginning and run up until the accusingPerson is reached
+		for (int i = 0; i < players.indexOf(accusingPerson); i++) {
+			Card c = players.get(i).disproveSuggestion(person, room, weapon);
+			if (c != null) {
+				return c;
+			}
+		}
+		
+		//If we ran through everyone and didn't find anything, return null
 		return null;
 	}
 	

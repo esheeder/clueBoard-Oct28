@@ -246,7 +246,6 @@ public class GameActionTests {
 		c = game.handleSuggestion("colonel mustard", "hall", "pipe", hp);
 		assertEquals(c, null);
 		
-		
 		//Make a suggestion that multiple people can disprove, and make sure that the card returned is the first person "to the left" of the accusing player
 		c = game.handleSuggestion("professor plum", "hall", "wrench", p2);
 		assertEquals(c.getName(), "professor plum");
