@@ -179,8 +179,10 @@ public class ClueGame {
 		
 	}
 	
-	public void handleSuggestion(String person, String room, String weapon, Player accusingPerson) {
+	public Card handleSuggestion(String person, String room, String weapon, Player accusingPerson) {
 		
+		
+		return null;
 	}
 	
 	public ArrayList<Card> getCards() {

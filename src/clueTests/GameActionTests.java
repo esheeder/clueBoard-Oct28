@@ -25,6 +25,7 @@ public class GameActionTests {
 	ClueGame game;
 	Board board;
 	ComputerPlayer player;
+	ArrayList<Player> testPlayers;
 	
 	@Before
 	public void setUp() {
@@ -36,6 +37,7 @@ public class GameActionTests {
 		board.calcAdjacencies();
 		game.loadCards();
 		game.loadPlayers();
+		testPlayers = new ArrayList<Player>();
 	}
 
 	@Test
@@ -205,19 +207,48 @@ public class GameActionTests {
 		assertTrue(person > 1);
 		assertTrue(room > 1);
 		assertTrue(weapon > 1);
-	}
 	
 		//Testing multiple players
-//		ArrayList<Player> testPlayers = new ArrayList<Player>();
-//		HumanPlayer hp = new HumanPlayer("Bob", "red", 1, 1);
-//		p2 = new ComputerPlayer("Rob", "blue", 2, 2);
-//		ComputerPlayer p3 = new ComputerPlayer("Greg", "yellow", 3, 3);
-//		ComputerPlayer p4 = new ComputerPlayer("Jim", "black", 4, 4);
-//		testPlayers.add(hp);
-//		testPlayers.add(p2);
-//		testPlayers.add(p3);
-//		testPlayers.add(p4);
-//		game.setPlayers(testPlayers);
-//		p2.setMyCards(new Card("P", "mrs white"));
-
+		//First, set up the players and give them 1 card of each type
+		HumanPlayer hp = new HumanPlayer("Bob", "red", 1, 1);
+		ComputerPlayer p2 = new ComputerPlayer("Rob", "blue", 2, 2);
+		ComputerPlayer p3 = new ComputerPlayer("Greg", "yellow", 3, 3);
+		ComputerPlayer p4 = new ComputerPlayer("Jim", "black", 4, 4);
+		hp.setMyCards(new Card("R", "library"));
+		hp.setMyCards(new Card("P", "mrs white"));
+		hp.setMyCards(new Card("W", "pipe"));
+		p2.setMyCards(new Card("R", "billiard room"));
+		p2.setMyCards(new Card("P", "miss scarlett"));
+		p2.setMyCards(new Card("W", "revolver"));	
+		p3.setMyCards(new Card("R", "kitchen"));
+		p3.setMyCards(new Card("P", "professor plum"));
+		p3.setMyCards(new Card("W", "rope"));	
+		p4.setMyCards(new Card("R", "lounge"));
+		p4.setMyCards(new Card("P", "mrs peacock"));
+		p4.setMyCards(new Card("W", "wrench"));
+		testPlayers.add(hp);
+		testPlayers.add(p2);
+		testPlayers.add(p3);
+		testPlayers.add(p4);
+		game.setPlayers(testPlayers);
+		
+		//Now call the handle suggestion function
+		//Make a suggestion that no one can disprove, should return null
+		c = game.handleSuggestion("colonel mustard", "hall", "dagger", hp);
+		assertEquals(c, null);
+		
+		//Make a suggestion only the human can disprove, should return the pipe
+		//Also ensures that all of the players are queried as the only person who can disprove it is also the last person, the human
+		c = game.handleSuggestion("colonel mustard", "hall", "pipe", p2);
+		assertEquals(c.getName(), "pipe");
+		
+		//Make a suggestion that only the suggester can prove, should return null
+		c = game.handleSuggestion("colonel mustard", "hall", "pipe", hp);
+		assertEquals(c, null);
+		
+		
+		//Make a suggestion that multiple people can disprove, and make sure that the card returned is the first person "to the left" of the accusing player
+		c = game.handleSuggestion("professor plum", "hall", "wrench", p2);
+		assertEquals(c.getName(), "professor plum");
+	}
 }
