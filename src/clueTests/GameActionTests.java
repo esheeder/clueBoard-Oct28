@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
@@ -16,6 +17,7 @@ import clueGame.ClueGame;
 import clueGame.ComputerPlayer;
 import clueGame.HumanPlayer;
 import clueGame.Player;
+import clueGame.RoomCell;
 import clueGame.Solution;
 
 public class GameActionTests {
@@ -256,8 +258,13 @@ public class GameActionTests {
 		//John is created in the Kitchen 
 		ComputerPlayer p5 = new ComputerPlayer("John", "orange", 6, 20);
 		
+		//Find out what room we are in
+		RoomCell r = board.getRoomCellAt(p5.getX(), p5.getY());
+		char c = r.getInitial();
+		Map<Character, String> testMap = board.getRooms();
+		String roomString = testMap.get(c);
 		//Update some cards that John has seen
-		p5.updateSeen("knife");
+		p5.updateSeen("rope");
 		p5.updateSeen("wrench");
 		p5.updateSeen("revolver");
 		p5.updateSeen("dagger");
@@ -275,18 +282,17 @@ public class GameActionTests {
 		
 		for (int i = 0; i < 100; i ++) {
 			//Use the solution class to store the info that our computer guesses
-			s = p5.createSuggestion();
-			
+			s = p5.createSuggestion(roomString);
 			//Count how many times our solution generates different values
-			if (s.room == "kitchen") kitchen++;
+			if (s.room.equals("Kitchen")) kitchen++;
 			else fail("Invalid room generated");
 			
-			if (s.weapon == "pipe") pipe++;
-			else if (s.weapon == "candle stick") candle++;
+			if (s.weapon.equals("pipe")) pipe++;
+			else if (s.weapon.equals("candle stick")) candle++;
 			else fail("Invalid weapon generated");
 			
-			if (s.person == "colonel mustard") mustard++;
-			else if (s.person == "mrs peacock") peacock++;
+			if (s.person.equals("colonel mustard")) mustard++;
+			else if (s.person.equals("mrs peacock")) peacock++;
 			else fail("Invalid person generated");
 		}
 		
@@ -301,9 +307,9 @@ public class GameActionTests {
 		p5.updateSeen("colonel mustard");
 		
 		//His generated solution should now be mrs peacock in the kitchen with the pipe
-		s = p5.createSuggestion();
+		s = p5.createSuggestion(roomString);
 		assertEquals(s.person, "mrs peacock");
 		assertEquals(s.weapon, "pipe");
-		assertEquals(s.room, "kitchen");
+		assertEquals(s.room, "Kitchen");
 	}
 }
