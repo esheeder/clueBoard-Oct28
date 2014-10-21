@@ -250,4 +250,60 @@ public class GameActionTests {
 		c = game.handleSuggestion("professor plum", "hall", "wrench", p2);
 		assertEquals(c.getName(), "professor plum");
 	}
+	
+	@Test
+	public void generatingComputerSuggestionsTest() {
+		//John is created in the Kitchen 
+		ComputerPlayer p5 = new ComputerPlayer("John", "orange", 6, 20);
+		
+		//Update some cards that John has seen
+		p5.updateSeen("knife");
+		p5.updateSeen("wrench");
+		p5.updateSeen("revolver");
+		p5.updateSeen("dagger");
+		p5.updateSeen("mrs white");
+		p5.updateSeen("miss scarlett");
+		p5.updateSeen("reverand green");
+		p5.updateSeen("professor plum");
+		
+		Solution s;
+		int kitchen = 0;
+		int pipe = 0;
+		int candle = 0;
+		int mustard = 0;
+		int peacock = 0;
+		
+		for (int i = 0; i < 100; i ++) {
+			//Use the solution class to store the info that our computer guesses
+			s = p5.createSuggestion();
+			
+			//Count how many times our solution generates different values
+			if (s.room == "kitchen") kitchen++;
+			else fail("Invalid room generated");
+			
+			if (s.weapon == "pipe") pipe++;
+			else if (s.weapon == "candle stick") candle++;
+			else fail("Invalid weapon generated");
+			
+			if (s.person == "colonel mustard") mustard++;
+			else if (s.person == "mrs peacock") peacock++;
+			else fail("Invalid person generated");
+		}
+		
+		assertEquals(kitchen, 100);
+		assertTrue(pipe > 1);
+		assertTrue(candle > 1);
+		assertTrue(mustard > 1);
+		assertTrue(peacock > 1);
+		
+		//Now update John to have seen everything but the pipe and mrs peacock
+		p5.updateSeen("candle stick");
+		p5.updateSeen("colonel mustard");
+		
+		//His generated solution should now be mrs peacock in the kitchen with the pipe
+		s = p5.createSuggestion();
+		assertEquals(s.person, "mrs peacock");
+		assertEquals(s.weapon, "pipe");
+		assertEquals(s.room, "kitchen");
+	}
 }

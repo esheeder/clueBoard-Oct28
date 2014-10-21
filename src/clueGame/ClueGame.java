@@ -99,6 +99,7 @@ public class ClueGame {
 				playerNum = 0;
 			}
 			players.get(playerNum).setMyCards(cards.get(i));
+			//TODO Later: Add cardsseen if it is a computer player
 			playerNum++;
 			cardsLeft--;
 		}

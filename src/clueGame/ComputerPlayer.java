@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 
@@ -8,9 +9,11 @@ import java.util.Set;
 public class ComputerPlayer extends Player {
 	
 	private char lastRoomVisited;
+	ArrayList<String> cardsSeen;
 	
 	public ComputerPlayer(String playerName, String playerColor, int x, int y) {
 		super(playerName, playerColor, x, y);
+		cardsSeen = new ArrayList<String>();
 	}
 	
 	public ComputerPlayer() {
@@ -36,12 +39,13 @@ public class ComputerPlayer extends Player {
 		return null;
 	}
 	
-	public void createSuggestion() {
+	public Solution createSuggestion() {
+		return null;
 		
 	}
 	
-	public void updateSeen(Card seen) {
-		
+	public void updateSeen(String seen) {
+		cardsSeen.add(seen);
 	}
 	
 	//For testing purposes
