@@ -1,5 +1,7 @@
 package clueGame;
 
+import java.awt.Graphics;
+
 abstract public class BoardCell {
 	private int row;
 	private int col;
@@ -27,7 +29,6 @@ abstract public class BoardCell {
 	public void setCol(int col){
 		this.col=col;
 	}
-	abstract public void draw();
 	@Override
 	public String toString() {
 		String boardCell="BoardCell [row=" + row + ", col=" + col + "]" + " is a ";
@@ -43,5 +44,7 @@ abstract public class BoardCell {
 		return boardCell;
 	}
 	
+	abstract public void draw(Graphics g, Board b);
+ 	
 
 }

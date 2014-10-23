@@ -1,5 +1,9 @@
 package clueGame;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -10,7 +14,12 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
-public class ClueGame {
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+
+public class ClueGame extends JFrame {
 	private Map<Character, String> rooms;
 	private ArrayList<Card> cards;
 	private ArrayList<Player> players;
@@ -20,6 +29,35 @@ public class ClueGame {
 	private int numOfWeapons = 0;
 	private int numOfRooms = 0;
 	private int cardsLeft; 
+	private WalkwayCell wc;
+	
+	
+	// Menu
+	private JMenu createFileMenu() {
+		JMenu menu = new JMenu("File");
+		menu.add(createFileDetectiveNotesItem());
+		menu.add(createFileExitItem());
+		return menu;
+	}
+	
+	// Exit Menu Item
+	private JMenuItem createFileExitItem() {
+		JMenuItem item = new JMenuItem("Exit");
+		class MenuItemListener implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		}
+		item.addActionListener(new MenuItemListener());
+		return item;
+	}
+	
+	// DetectiveNotes Menu Item
+	private JMenuItem createFileDetectiveNotesItem() {
+		JMenuItem item = new JMenuItem("DetectiveNotes");
+		
+		return item;
+	}
 
 	public static String boardLayout;
 	public static String legend;
@@ -28,6 +66,13 @@ public class ClueGame {
 		board=new Board();
 		boardLayout="ClueLayout.csv";
 		legend="ClueLegend.txt";
+		// JPanel
+		add(board, BorderLayout.CENTER);
+		setSize(300,300);
+		// JFrame
+		JMenuBar file = new JMenuBar();
+		setJMenuBar(file);
+		file.add(createFileMenu());
 	}
 	public ClueGame(String boardLayout, String legend) {
 		rooms=new HashMap<Character, String>();
@@ -238,5 +283,16 @@ public class ClueGame {
 		solution.weapon = "candle stick";
 		solution.room = "kitchen";
 	}
+	
+	
+	// used to display the board GUI
+	public static void main(String[] args) {
+		ClueGame game = new ClueGame();
+		game.setTitle("Clue");
+		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		game.setVisible(true);
+	}
 
 }
+
+

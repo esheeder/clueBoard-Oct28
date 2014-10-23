@@ -13,7 +13,9 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-public class Board {
+import javax.swing.JPanel;
+
+public class Board extends JPanel {
 	private int numRows;
 	private int numCols;
 	private BoardCell[][] boardLayout; 
@@ -30,6 +32,18 @@ public class Board {
 		visited= new HashSet<BoardCell>();
 		targets= new HashSet<BoardCell>();
 	}
+	
+	// draw the board
+	public void paintComponent() {
+		try {
+			loadBoardConfig();
+		} catch (BadConfigFormatException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
 	//tell boardLayout what size to be
 	public void initializeBoardLayout(){
 		FileReader reader= null;

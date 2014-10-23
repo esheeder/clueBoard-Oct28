@@ -1,5 +1,8 @@
 package clueGame;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 public class WalkwayCell extends BoardCell{
 
 	public WalkwayCell() {
@@ -10,7 +13,9 @@ public class WalkwayCell extends BoardCell{
 		return true;
 	}
 	@Override
-	public void draw(){
-		
+	public void draw(Graphics g, Board b){
+		// Walkway cells
+		g.setColor(Color.YELLOW);
+		g.drawRect(10, 10, 15, 15);
 	}
 }

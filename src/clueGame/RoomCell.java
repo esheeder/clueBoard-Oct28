@@ -1,5 +1,7 @@
 package clueGame;
 
+import java.awt.Graphics;
+
 public class RoomCell extends BoardCell{
 	public enum DoorDirection {
 		UP('U'), DOWN('D'), RIGHT('R'), LEFT('L'), NONE('N');
@@ -30,10 +32,7 @@ public class RoomCell extends BoardCell{
 			return false;
 		}
 	}
-	@Override
-	public void draw(){
-		
-	}
+	
 	public DoorDirection getDoorDirection() {
 		return doorDirection;
 	}
@@ -41,4 +40,9 @@ public class RoomCell extends BoardCell{
 		return roomInitial;
 	}
 	
+	@Override
+	public void draw(Graphics g, Board b){
+		
+	}
+
 }
