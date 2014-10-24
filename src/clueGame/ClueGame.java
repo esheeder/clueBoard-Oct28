@@ -72,8 +72,8 @@ public class ClueGame extends JFrame {
 	public ClueGame() {
 		rooms=new HashMap<Character, String>();
 		board=new Board();
-		boardLayout="clueBoard/ClueBoardLayout.csv";
-		legend="clueBoard/ClueLegend.txt";
+		boardLayout="ClueBoardLayout.csv";
+		legend="ClueLegend.txt";
 		// JPanel
 		add(getBoard(), BorderLayout.CENTER);
 		setSize(750,950);
@@ -300,10 +300,9 @@ public class ClueGame extends JFrame {
 		game.setTitle("Clue");
 		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		game.setVisible(true);
-		
+		game.loadPlayers();
+		game.getBoard().setPlayers(game.getPlayers());
 		game.getBoard().paintComponent(game.getGraphics());
 	}
 
 }
-
-

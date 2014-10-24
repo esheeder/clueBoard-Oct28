@@ -27,6 +27,7 @@ public class Board extends JPanel {
 	private Map<Integer, LinkedList<BoardCell>> adjMtx;
 	private BoardCell startingCell;
 	private Set<BoardCell> deadEnds = new HashSet<BoardCell>();
+	private ArrayList<Player> players = new ArrayList<Player>();
 	
 	public Board() {
 		adjMtx= new HashMap<Integer, LinkedList<BoardCell>>();
@@ -37,14 +38,19 @@ public class Board extends JPanel {
 	// draw the board
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		System.out.println("x: " + numCols + " " + numRows);
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numCols; j++) {
 				boardLayout[i][j].draw(g, this);
 			}
 		}
-		System.out.println("drawing");
 		
+		for (Player p : players) {
+			p.draw(g);
+		}
+	}
+	
+	public void setPlayers(ArrayList<Player> players) {
+		this.players = players;
 	}
 	
 	//tell boardLayout what size to be
@@ -119,7 +125,9 @@ public class Board extends JPanel {
 							boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.RIGHT);
 							break;
 						case 'N':
-							boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.NONE);
+							RoomCell temp = new RoomCell(key.charAt(0),RoomCell.DoorDirection.NONE);
+							temp.setName(rooms.get(key.charAt(0)));
+							boardLayout[row][col]= temp;
 							break;
 						default:
 							break;
