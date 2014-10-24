@@ -3,6 +3,7 @@ package clueGame;
 import clueGame.BoardCell;
 import clueGame.RoomCell.DoorDirection;
 
+import java.awt.Graphics;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -34,13 +35,15 @@ public class Board extends JPanel {
 	}
 	
 	// draw the board
-	public void paintComponent() {
-		try {
-			loadBoardConfig();
-		} catch (BadConfigFormatException e) {
-			e.printStackTrace();
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		System.out.println("x: " + numCols + " " + numRows);
+		for(int i = 0; i < numRows; i++) {
+			for(int j = 0; j < numCols; j++) {
+				boardLayout[i][j].draw(g, this);
+			}
 		}
-		
+		System.out.println("drawing");
 		
 	}
 	

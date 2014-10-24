@@ -1,5 +1,6 @@
 package clueGame;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 public class RoomCell extends BoardCell{
@@ -42,6 +43,28 @@ public class RoomCell extends BoardCell{
 	
 	@Override
 	public void draw(Graphics g, Board b){
+		g.setColor(Color.gray);
+		g.fillRect(30*getCol(), 30*getRow(), 30, 30);
+		
+		if(isDoorway()) {
+			g.setColor(Color.blue);
+			switch(this.doorDirection) {
+			
+			case DOWN:
+				g.fillRect(30*getCol(), 30*getRow() + 25, 30, 5);
+				break;
+			case UP:
+				g.fillRect(30*getCol(), 30*getRow(), 30, 5);
+				break;
+			case RIGHT:
+				g.fillRect(30*getCol() + 25, 30*getRow(), 5, 30);
+				break;
+			case LEFT:
+				g.fillRect(30*getCol(), 30*getRow(), 5, 30);
+				break;
+			}
+		}
+		
 		
 	}
 

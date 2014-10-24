@@ -2,6 +2,7 @@ package clueGame;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -29,7 +30,6 @@ public class ClueGame extends JFrame {
 	private int numOfWeapons = 0;
 	private int numOfRooms = 0;
 	private int cardsLeft; 
-	private WalkwayCell wc;
 	
 	
 	// Menu
@@ -54,7 +54,15 @@ public class ClueGame extends JFrame {
 	
 	// DetectiveNotes Menu Item
 	private JMenuItem createFileDetectiveNotesItem() {
-		JMenuItem item = new JMenuItem("DetectiveNotes");
+		final JMenuItem item = new JMenuItem("Show Notes");
+		class MenuItemListener implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				// TODO Open the Detective Notes Dialog Frame
+				DetectiveNotes dn = new DetectiveNotes();
+				dn.setVisible(true);
+				
+			}
+		}
 		
 		return item;
 	}
@@ -64,11 +72,11 @@ public class ClueGame extends JFrame {
 	public ClueGame() {
 		rooms=new HashMap<Character, String>();
 		board=new Board();
-		boardLayout="ClueLayout.csv";
-		legend="ClueLegend.txt";
+		boardLayout="clueBoard/ClueBoardLayout.csv";
+		legend="clueBoard/ClueLegend.txt";
 		// JPanel
-		add(board, BorderLayout.CENTER);
-		setSize(300,300);
+		add(getBoard(), BorderLayout.CENTER);
+		setSize(750,950);
 		// JFrame
 		JMenuBar file = new JMenuBar();
 		setJMenuBar(file);
@@ -288,9 +296,12 @@ public class ClueGame extends JFrame {
 	// used to display the board GUI
 	public static void main(String[] args) {
 		ClueGame game = new ClueGame();
+		game.loadConfigFiles();
 		game.setTitle("Clue");
 		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		game.setVisible(true);
+		
+		game.getBoard().paintComponent(game.getGraphics());
 	}
 
 }
