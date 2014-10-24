@@ -30,6 +30,7 @@ public class ClueGame extends JFrame {
 	private int numOfWeapons = 0;
 	private int numOfRooms = 0;
 	private int cardsLeft; 
+	private DetectiveNotes myDN;
 	
 	
 	// Menu
@@ -55,15 +56,14 @@ public class ClueGame extends JFrame {
 	// DetectiveNotes Menu Item
 	private JMenuItem createFileDetectiveNotesItem() {
 		final JMenuItem item = new JMenuItem("Show Notes");
-		class MenuItemListener implements ActionListener {
+		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Open the Detective Notes Dialog Frame
-				DetectiveNotes dn = new DetectiveNotes();
-				dn.setVisible(true);
-				
+				myDN = new DetectiveNotes();
+				myDN.setModal(true);
+				myDN.setVisible(true);
 			}
-		}
-		
+		});
 		return item;
 	}
 
