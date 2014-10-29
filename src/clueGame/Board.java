@@ -27,12 +27,13 @@ public class Board extends JPanel {
 	private Map<Integer, LinkedList<BoardCell>> adjMtx;
 	private BoardCell startingCell;
 	private Set<BoardCell> deadEnds = new HashSet<BoardCell>();
-	private ArrayList<Player> players = new ArrayList<Player>();
-	
-	public Board() {
+	//private ArrayList<Player> players = new ArrayList<Player>();
+	private ClueGame game;
+	public Board(ClueGame game) {
 		adjMtx= new HashMap<Integer, LinkedList<BoardCell>>();
 		visited= new HashSet<BoardCell>();
 		targets= new HashSet<BoardCell>();
+		this.game = game;
 	}
 	
 	// draw the board
@@ -44,14 +45,11 @@ public class Board extends JPanel {
 			}
 		}
 		
-		for (Player p : players) {
+		for (Player p : game.getPlayers()) {
 			p.draw(g);
 		}
 	}
 	
-	public void setPlayers(ArrayList<Player> players) {
-		this.players = players;
-	}
 	
 	//tell boardLayout what size to be
 	public void initializeBoardLayout(){

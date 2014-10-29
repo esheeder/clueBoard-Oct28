@@ -71,7 +71,7 @@ public class ClueGame extends JFrame {
 	public static String legend;
 	public ClueGame() {
 		rooms=new HashMap<Character, String>();
-		board=new Board();
+		board=new Board(this);
 		boardLayout="ClueBoardLayout.csv";
 		legend="ClueLegend.txt";
 		// JPanel
@@ -84,7 +84,7 @@ public class ClueGame extends JFrame {
 	}
 	public ClueGame(String boardLayout, String legend) {
 		rooms=new HashMap<Character, String>();
-		board=new Board();
+		board=new Board(this);
 		ClueGame.boardLayout=boardLayout;
 		ClueGame.legend=legend;
 	}
@@ -301,7 +301,6 @@ public class ClueGame extends JFrame {
 		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		game.setVisible(true);
 		game.loadPlayers();
-		game.getBoard().setPlayers(game.getPlayers());
 		game.getBoard().paintComponent(game.getGraphics());
 	}
 
