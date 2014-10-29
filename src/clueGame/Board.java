@@ -252,23 +252,23 @@ public class Board extends JPanel {
 	}
 	private void populateAdjMtx(int cellNum, int row, int col){
 		LinkedList<BoardCell> adjCells=new LinkedList<BoardCell>();
-		ArrayList<BoardCell> neighbors=new ArrayList<BoardCell>();
 		if(boardLayout[row][col].isRoom() && !boardLayout[row][col].isDoorway()){
-
+			//No adjacencies
 		}else if(boardLayout[row][col].isDoorway()){
 			RoomCell door=(RoomCell)boardLayout[row][col];
-			if(door.getDoorDirection()==RoomCell.DoorDirection.UP && row-1 >=0 ){
-				neighbors.add(boardLayout[row-1][col]);
-			}else if(door.getDoorDirection()==RoomCell.DoorDirection.DOWN && row+1 < numRows){
-				neighbors.add(boardLayout[row+1][col]);
-			}else if(door.getDoorDirection()==RoomCell.DoorDirection.LEFT && col-1 >= 0){
-				neighbors.add(boardLayout[row][col-1]);
-			}else if(door.getDoorDirection()==RoomCell.DoorDirection.RIGHT && col+1 < numCols){
-				neighbors.add(boardLayout[row][col+1]);
-			}else{}
-			//check if neighbors is populated
-			if(neighbors.size() >0){
-				adjCells.add(neighbors.get(0));
+			switch(door.getDoorDirection()){
+			case UP:
+				adjCells.add(boardLayout[row-1][col]);
+				break;
+			case DOWN:
+				adjCells.add(boardLayout[row+1][col]);
+				break;
+			case LEFT:
+				adjCells.add(boardLayout[row][col-1]);
+				break;
+			case RIGHT:
+				adjCells.add(boardLayout[row][col+1]);
+				break;
 			}
 		}else{
 			if(row+1 < numRows && (boardLayout[row+1][col].isDoorway() || boardLayout[row+1][col].isWalkway())){
@@ -276,10 +276,10 @@ public class Board extends JPanel {
 				if(boardLayout[row+1][col].isDoorway()){
 					RoomCell room=(RoomCell)boardLayout[row+1][col];
 					if(room.getDoorDirection()==RoomCell.DoorDirection.UP){
-						neighbors.add(boardLayout[row+1][col]);
+						adjCells.add(boardLayout[row+1][col]);
 					}
 				}else{
-					neighbors.add(boardLayout[row+1][col]);
+					adjCells.add(boardLayout[row+1][col]);
 				}
 			}
 			if(row-1 >= 0 && (boardLayout[row-1][col].isDoorway() || boardLayout[row-1][col].isWalkway()) ){
@@ -287,10 +287,10 @@ public class Board extends JPanel {
 				if(boardLayout[row-1][col].isDoorway()){
 					RoomCell room=(RoomCell)boardLayout[row-1][col];
 					if(room.getDoorDirection()==RoomCell.DoorDirection.DOWN){
-						neighbors.add(boardLayout[row-1][col]);
+						adjCells.add(boardLayout[row-1][col]);
 					}
 				}else{
-					neighbors.add(boardLayout[row-1][col]);
+					adjCells.add(boardLayout[row-1][col]);
 				}
 			}
 			if(col+1 < numCols && (boardLayout[row][col+1].isDoorway() || boardLayout[row][col+1].isWalkway()) ){
@@ -298,10 +298,10 @@ public class Board extends JPanel {
 				if(boardLayout[row][col+1].isDoorway()){
 					RoomCell room=(RoomCell)boardLayout[row][col+1];
 					if(room.getDoorDirection()==RoomCell.DoorDirection.LEFT){
-						neighbors.add(boardLayout[row][col+1]);
+						adjCells.add(boardLayout[row][col+1]);
 					}
 				}else{
-					neighbors.add(boardLayout[row][col+1]);
+					adjCells.add(boardLayout[row][col+1]);
 				}
 			}
 			if(col-1 >= 0 && (boardLayout[row][col-1].isDoorway() || boardLayout[row][col-1].isWalkway()) ){
@@ -309,14 +309,11 @@ public class Board extends JPanel {
 				if(boardLayout[row][col-1].isDoorway()){
 					RoomCell room=(RoomCell)boardLayout[row][col-1];
 					if(room.getDoorDirection()==RoomCell.DoorDirection.RIGHT){
-						neighbors.add(boardLayout[row][col-1]);
+						adjCells.add(boardLayout[row][col-1]);
 					}
 				}else{
-					neighbors.add(boardLayout[row][col-1]);
+					adjCells.add(boardLayout[row][col-1]);
 				}
-			}
-			for(int i=0; i<neighbors.size(); i++){
-				adjCells.add(neighbors.get(i));
 			}
 		}
 		adjMtx.put(cellNum, adjCells);

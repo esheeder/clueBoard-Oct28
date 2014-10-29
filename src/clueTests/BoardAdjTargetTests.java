@@ -116,7 +116,7 @@ public class BoardAdjTargetTests {
 	}
 	@Test
 	public void testTargetsSixSteps() {
-		board.calcTargets(14, 0, 2);
+		board.calcTargets(14, 0, 6);
 		Set<BoardCell> targets= board.getTargets();
 		System.out.println("targets size is " + targets.size());
 		Assert.assertTrue(targets.contains(board.getCellAt(11, 3)));
