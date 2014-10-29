@@ -22,7 +22,12 @@ public class RoomCell extends BoardCell{
 	public RoomCell(char roomInitial, DoorDirection direction){
 		this.roomInitial=roomInitial;
 		this.doorDirection=direction;
-		name = "";
+		name = null;
+	}
+	public RoomCell(String name, char roomInitial, DoorDirection direction){
+		this.name = name;
+		this.roomInitial = roomInitial;
+		this.doorDirection = direction;
 	}
 	@Override
 	public boolean isRoom(){
@@ -43,11 +48,6 @@ public class RoomCell extends BoardCell{
 	public char getInitial() {
 		return roomInitial;
 	}
-	
-	public void setName(String someString) {
-		name = someString;
-	}
-	
 	@Override
 	public void draw(Graphics g, Board b){
 		g.setColor(Color.gray);
@@ -69,10 +69,12 @@ public class RoomCell extends BoardCell{
 			case LEFT:
 				g.fillRect(30*getCol(), 30*getRow(), 5, 30);
 				break;
+			case NONE:
+				break;
 			}
 		}
 		
-		if (!name.equals("")) {
+		if (name != null) {
 			g.setColor(Color.BLACK);
 			g.setFont(new Font("Serif", Font.PLAIN, 12));
 			g.drawString(name, 30*getCol()-15, 30*getRow()-15);

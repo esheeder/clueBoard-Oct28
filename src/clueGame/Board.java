@@ -127,9 +127,7 @@ public class Board extends JPanel {
 						boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.RIGHT);
 						break;
 					case 'N':
-						RoomCell temp = new RoomCell(key.charAt(0),RoomCell.DoorDirection.NONE);
-						temp.setName(rooms.get(key.charAt(0)));
-						boardLayout[row][col]= temp;
+						boardLayout[row][col]= new RoomCell(rooms.get(key.charAt(0)),key.charAt(0),RoomCell.DoorDirection.NONE);
 						break;
 					default:
 						break;
