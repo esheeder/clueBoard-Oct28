@@ -33,7 +33,7 @@ public class ConfigInitTests {
 	@BeforeClass
 	public static void testInit(){
 		//Our game is BoardLayout.csv and BoardLegend.txt
-		ClueGame game = new ClueGame("clueBoard/BoardLayout.csv", "clueBoard/BoardLegend.txt");
+		ClueGame game = new ClueGame("BoardLayout.csv", "BoardLegend.txt");
 		game.loadConfigFiles();
 		board = game.getBoard();
 	}

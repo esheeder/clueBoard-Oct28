@@ -35,7 +35,7 @@ public class Board extends JPanel {
 		targets= new HashSet<BoardCell>();
 		this.game = game;
 	}
-	
+
 	// draw the board
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -44,13 +44,13 @@ public class Board extends JPanel {
 				boardLayout[i][j].draw(g, this);
 			}
 		}
-		
+
 		for (Player p : game.getPlayers()) {
 			p.draw(g);
 		}
 	}
-	
-	
+
+
 	//tell boardLayout what size to be
 	public void initializeBoardLayout(){
 		FileReader reader= null;
@@ -65,7 +65,7 @@ public class Board extends JPanel {
 		String[] line;
 		line=setUp.nextLine().split(",");
 		numCols=line.length;
-		
+
 		while(setUp.hasNextLine()){
 			setUp.nextLine();
 			rows++;
@@ -99,38 +99,46 @@ public class Board extends JPanel {
 			//populate each row left to right
 			for(String type:line){
 				key=type;
-				if(rooms.containsKey(key.charAt(0)) && key.length() == 1 && !key.equals("W")){
+				//Error handling first
+				if(!rooms.containsKey(key.charAt(0))){
+					throw new BadConfigFormatException("Invalid symbol in room.");
+				}
+				if(key.charAt(0)=='W' && key.length() != 1){
+					throw new BadConfigFormatException("Invalid symbol in room.");
+				}
+				//Cases where key is length 1
+				if(key.length() == 1 && !key.equals("W")){
 					boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.NONE);
 				}else if(key.equals("W") && key.length() == 1){
 					boardLayout[row][col]=new WalkwayCell();
-				}else if(!rooms.containsKey(key.charAt(0))){
-					throw new BadConfigFormatException("Invalid symbol in room.");
-				}else if(key.charAt(0)=='W' && key.length() != 1){
-					throw new BadConfigFormatException("Invalid symbol in room.");
-				}else{
+				}else if(key.length() == 2){
 					char direction =key.charAt(1);
 					switch (direction){
-						case 'U':
-							boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.UP);
-							break;
-						case 'D':
-							boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.DOWN);
-							break;
-						case 'L':
-							boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.LEFT);
-							break;
-						case 'R':
-							boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.RIGHT);
-							break;
-						case 'N':
-							RoomCell temp = new RoomCell(key.charAt(0),RoomCell.DoorDirection.NONE);
-							temp.setName(rooms.get(key.charAt(0)));
-							boardLayout[row][col]= temp;
-							break;
-						default:
-							break;
+					case 'U':
+						boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.UP);
+						break;
+					case 'D':
+						boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.DOWN);
+						break;
+					case 'L':
+						boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.LEFT);
+						break;
+					case 'R':
+						boardLayout[row][col]=new RoomCell(key.charAt(0),RoomCell.DoorDirection.RIGHT);
+						break;
+					case 'N':
+						RoomCell temp = new RoomCell(key.charAt(0),RoomCell.DoorDirection.NONE);
+						temp.setName(rooms.get(key.charAt(0)));
+						boardLayout[row][col]= temp;
+						break;
+					default:
+						break;
 					}
+				}else {
+					//Cases have all been covered
+					throw new BadConfigFormatException("Invalid symbol in BoardConfig file");
 				}
+
 				boardLayout[row][col].setRow(row);
 				boardLayout[row][col].setCol(col);
 				col++;
@@ -171,42 +179,42 @@ public class Board extends JPanel {
 		this.rooms=rooms;
 	}
 	public void calcTargets(int row, int col, int roll) {
-		
+
 		if(visited.isEmpty())
 		{
 			startingCell = getCellAt(row, col);
 			targets.clear();
 			deadEnds.clear();
 		}
-		
+
 		LinkedList<BoardCell> adjCells=getAdjList(row, col);
 		LinkedList<BoardCell> adjList=new LinkedList<BoardCell>();
-		
-		
+
+
 		if(adjCells.size() == 1 && roll > 1 )
 		{
 			deadEnds.add(getCellAt(row, col));
 		}
-		
-		
+
+
 		for(BoardCell unvisited:adjCells){
 			if(!visited.contains(unvisited) ){
-				
+
 				adjList.add(unvisited);
-		        if(unvisited.isDoorway())
-		        {
-		        	targets.add(unvisited);
-		        }
-				
+				if(unvisited.isDoorway())
+				{
+					targets.add(unvisited);
+				}
+
 			}
-			
+
 		}
 		if(roll==1){
 			for(BoardCell targetCells:adjList){
-			    
+
 				targets.add(targetCells);
 				targets.remove(startingCell);
-				
+
 			}
 		}else{
 			for(BoardCell tmp:adjList){
@@ -220,7 +228,7 @@ public class Board extends JPanel {
 			targets.remove(deadend);
 		}
 	}
-	
+
 	public Set<BoardCell> getTargets() {
 		Set<BoardCell> copyTargets = new HashSet<BoardCell>();
 		for(BoardCell b : targets) {
@@ -229,11 +237,11 @@ public class Board extends JPanel {
 		targets.clear();
 		return copyTargets;
 	}
-	
+
 	public LinkedList<BoardCell> getAdjList(int row, int col) {
 		return adjMtx.get(getCellNumber(row,col));
 	}
-	
+
 	public void calcAdjacencies(){
 		int cellNumber = 0;
 		cellNumber=0;
@@ -248,7 +256,7 @@ public class Board extends JPanel {
 		LinkedList<BoardCell> adjCells=new LinkedList<BoardCell>();
 		ArrayList<BoardCell> neighbors=new ArrayList<BoardCell>();
 		if(boardLayout[row][col].isRoom() && !boardLayout[row][col].isDoorway()){
-			
+
 		}else if(boardLayout[row][col].isDoorway()){
 			RoomCell door=(RoomCell)boardLayout[row][col];
 			if(door.getDoorDirection()==RoomCell.DoorDirection.UP && row-1 >=0 ){
@@ -343,7 +351,7 @@ public IntBoard() {
 		for(int j=0; j < BOARD_HEIGHT; j++){
 			calcAdjacencies(cellNumber, getCell(i,j));
 			cellNumber++;
-			
+
 		}
 	}
 	visited= new HashSet<BoardCell>();
@@ -366,10 +374,10 @@ public void calcAdjacencies(int cellNum, BoardCell cell){
 	for(int i=0; i<neighbors.size(); i++)
 	{
 			adjCells.add(neighbors.get(i));
-	
+
 	}
 	adjMtx.put(cellNum, adjCells);
-	
+
 }
 public void calcTargets(BoardCell cell, int roll){
 	//Clear sets for new roll
@@ -392,11 +400,11 @@ public void targetFinder(BoardCell cell,int roll){
 		if(!visited.contains(unvisited)){
 			adjList.add(unvisited);
 		}
-		
+
 	}
 	if(roll==1){
 		for(BoardCell targetCells:adjList){
-		
+
 			targets.add(targetCells);
 
 		}
@@ -419,4 +427,4 @@ public BoardCell getCell(int row, int col){
 }
 
 }
-*/
+ */
