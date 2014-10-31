@@ -93,4 +93,8 @@ public class Player {
 		g.drawOval(30*y, 30*x, 30, 30);
 	}
 	
+	public void fillCardArrays(Card c) {
+		
+	}
+	
 }

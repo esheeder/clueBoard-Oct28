@@ -146,6 +146,12 @@ public class ClueGame extends JFrame {
 		solution.weapon = cards.get(w).getName();
 		solution.room = cards.get(r).getName();
 		
+		for(Player pa : players) {
+			for (Card c : cards) {
+				pa.fillCardArrays(c);
+			}
+		}
+		
 		//Removing the person, weapon, and room selected
 		cards.remove(r);
 		cards.remove(w);

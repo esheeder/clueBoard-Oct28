@@ -12,26 +12,14 @@ public class ComputerPlayer extends Player {
 	ArrayList<String> cardsSeen;
 	ArrayList<String> peopleCards;
 	ArrayList<String> weaponCards;
+	ArrayList<String> roomCards;
 	
 	public ComputerPlayer(String playerName, String playerColor, int x, int y) {
 		super(playerName, playerColor, x, y);
 		cardsSeen = new ArrayList<String>();
 		peopleCards = new ArrayList<String>();
 		weaponCards = new ArrayList<String>();
-		
-		peopleCards.add("mrs peacock");
-		peopleCards.add("mrs white");
-		peopleCards.add("miss scarlett");
-		peopleCards.add("reverand green");
-		peopleCards.add("colonel mustard");
-		peopleCards.add("professor plum");
-		
-		weaponCards.add("pipe");
-		weaponCards.add("candle stick");
-		weaponCards.add("dagger");
-		weaponCards.add("revolver");
-		weaponCards.add("rope");
-		weaponCards.add("wrench");
+		roomCards = new ArrayList<String>();
 	}
 	
 	public ComputerPlayer() {
@@ -90,5 +78,15 @@ public class ComputerPlayer extends Player {
 	//For testing purposes
 	public void setLastRoomVisited(char c) {
 		lastRoomVisited = c;
+	}
+	
+	public void fillCardArrays(Card c) {
+		if (c.getCardType().equals("PERSON")) {
+			peopleCards.add(c.getName());
+		} else if (c.getCardType().equals("WEAPON")) {
+			weaponCards.add(c.getName());
+		} else {
+			roomCards.add(c.getName());
+		}
 	}
 }
