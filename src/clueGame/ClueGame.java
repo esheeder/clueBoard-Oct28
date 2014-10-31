@@ -31,7 +31,8 @@ public class ClueGame extends JFrame {
 	private int numOfRooms = 0;
 	private int cardsLeft; 
 	private DetectiveNotes myDN;
-	
+	public static String boardLayout;
+	public static String legend;
 	
 	// Menu
 	private JMenu createFileMenu() {
@@ -67,8 +68,7 @@ public class ClueGame extends JFrame {
 		return item;
 	}
 
-	public static String boardLayout;
-	public static String legend;
+
 	public ClueGame() {
 		rooms=new HashMap<Character, String>();
 		board=new Board(this);
@@ -108,6 +108,8 @@ public class ClueGame extends JFrame {
 	public void loadRoomConfig() throws BadConfigFormatException{
 		FileReader reader= null;
 		Scanner in = null;
+		
+		//Reading the file
 		try{
 			reader=new FileReader(legend);
 			in= new Scanner(reader);
@@ -117,6 +119,8 @@ public class ClueGame extends JFrame {
 		String legendLine=null;
 		String room=null;
 		char roomKey;
+		
+		//Reading the legend file and filling up the map with info from it
 		while(in.hasNextLine()){
 			legendLine=in.nextLine();
 			String[] testLine=legendLine.split(",");
@@ -133,6 +137,8 @@ public class ClueGame extends JFrame {
 	public void deal() {
 		Random rn = new Random();
 		solution = new Solution();
+		
+		//Randomly selecting a person, weapon, and room
 		int p = rn.nextInt(6);
 		int w = rn.nextInt(6) + 6;
 		int r = rn.nextInt(9) + 12;
@@ -140,10 +146,11 @@ public class ClueGame extends JFrame {
 		solution.weapon = cards.get(w).getName();
 		solution.room = cards.get(r).getName();
 		
+		//Removing the person, weapon, and room selected
 		cards.remove(r);
 		cards.remove(w);
 		cards.remove(p);
-		cardsLeft = cards.size();
+		
 		Collections.shuffle(cards);
 		Collections.shuffle(players);
 		int playerNum = 0;
@@ -154,6 +161,7 @@ public class ClueGame extends JFrame {
 			players.get(playerNum).setMyCards(cards.get(i));
 			//TODO Later: Add cardsseen if it is a computer player
 			playerNum++;
+			//variable used for testing
 			cardsLeft--;
 		}
 	}
@@ -226,11 +234,6 @@ public class ClueGame extends JFrame {
 			}
 			
 		}
-	}
-	
-	
-	public void selectAnswer() {
-		
 	}
 	
 	public Card handleSuggestion(String person, String room, String weapon, Player accusingPerson) {
