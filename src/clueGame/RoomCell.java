@@ -15,15 +15,19 @@ public class RoomCell extends BoardCell{
 			return direction;
 		}
 	}
+	//Private Variables
 	private DoorDirection doorDirection;
 	private char roomInitial;
 	private String name;
 	
+	//Used for cells that don't draw a name on the board
 	public RoomCell(char roomInitial, DoorDirection direction){
 		this.roomInitial=roomInitial;
 		this.doorDirection=direction;
 		name = null;
 	}
+	
+	//Used for cells that need to draw the name on the board
 	public RoomCell(String name, char roomInitial, DoorDirection direction){
 		this.name = name;
 		this.roomInitial = roomInitial;
@@ -50,9 +54,11 @@ public class RoomCell extends BoardCell{
 	}
 	@Override
 	public void draw(Graphics g, Board b){
+		//Rooms are 30 pixels by 30 pixels
 		g.setColor(Color.gray);
 		g.fillRect(30*getCol(), 30*getRow(), 30, 30);
 		
+		//Doors are blue and 5x30
 		if(isDoorway()) {
 			g.setColor(Color.blue);
 			switch(this.doorDirection) {
@@ -74,6 +80,7 @@ public class RoomCell extends BoardCell{
 			}
 		}
 		
+		//If the room is designated as a "name" room on the spreadsheet, this part will draw the name slightly up and to the left of the cell
 		if (name != null) {
 			g.setColor(Color.BLACK);
 			g.setFont(new Font("Serif", Font.PLAIN, 12));
