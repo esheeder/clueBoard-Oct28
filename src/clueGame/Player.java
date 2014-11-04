@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Random;
 public class Player {
 
+	public static final int CELL_SIZE = 20;
 	private String name;
 	private Color color;
 	private int x;
@@ -88,9 +89,9 @@ public class Player {
 	
 	public void draw(Graphics g){
 		g.setColor(color);
-		g.fillOval(30*y, 30*x, 30, 30);
+		g.fillOval(CELL_SIZE*y, CELL_SIZE*x, CELL_SIZE, CELL_SIZE);
 		g.setColor(Color.black);
-		g.drawOval(30*y, 30*x, 30, 30);
+		g.drawOval(CELL_SIZE*y, CELL_SIZE*x, CELL_SIZE, CELL_SIZE);
 	}
 	
 	public void fillCardArrays(Card c) {

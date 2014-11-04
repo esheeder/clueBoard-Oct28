@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 public class RoomCell extends BoardCell{
+	public static final int DOOR_SIZE = 5;
+	public static final int CELL_SIZE = 20;
 	public enum DoorDirection {
 		UP('U'), DOWN('D'), RIGHT('R'), LEFT('L'), NONE('N');
 		private char direction;
@@ -56,7 +58,7 @@ public class RoomCell extends BoardCell{
 	public void draw(Graphics g, Board b){
 		//Rooms are 30 pixels by 30 pixels
 		g.setColor(Color.gray);
-		g.fillRect(30*getCol(), 30*getRow(), 30, 30);
+		g.fillRect(CELL_SIZE*getCol(), CELL_SIZE*getRow(), CELL_SIZE, CELL_SIZE);
 		
 		//Doors are blue and 5x30
 		if(isDoorway()) {
@@ -64,16 +66,16 @@ public class RoomCell extends BoardCell{
 			switch(this.doorDirection) {
 			
 			case DOWN:
-				g.fillRect(30*getCol(), 30*getRow() + 25, 30, 5);
+				g.fillRect(CELL_SIZE*getCol(), CELL_SIZE*getRow() + CELL_SIZE - DOOR_SIZE, CELL_SIZE, DOOR_SIZE);
 				break;
 			case UP:
-				g.fillRect(30*getCol(), 30*getRow(), 30, 5);
+				g.fillRect(CELL_SIZE*getCol(), CELL_SIZE*getRow(), CELL_SIZE, DOOR_SIZE);
 				break;
 			case RIGHT:
-				g.fillRect(30*getCol() + 25, 30*getRow(), 5, 30);
+				g.fillRect(CELL_SIZE*getCol() + CELL_SIZE - DOOR_SIZE, CELL_SIZE*getRow(), DOOR_SIZE, CELL_SIZE);
 				break;
 			case LEFT:
-				g.fillRect(30*getCol(), 30*getRow(), 5, 30);
+				g.fillRect(CELL_SIZE*getCol(), CELL_SIZE*getRow(), DOOR_SIZE, CELL_SIZE);
 				break;
 			case NONE:
 				break;
@@ -84,7 +86,7 @@ public class RoomCell extends BoardCell{
 		if (name != null) {
 			g.setColor(Color.BLACK);
 			g.setFont(new Font("Serif", Font.PLAIN, 12));
-			g.drawString(name, 30*getCol()-15, 30*getRow()-15);
+			g.drawString(name, CELL_SIZE*getCol()-15, CELL_SIZE*getRow()-15);
 		}
 		
 	}

@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 public class ClueGame extends JFrame {
 	private Map<Character, String> rooms;
@@ -76,7 +77,10 @@ public class ClueGame extends JFrame {
 		legend="ClueLegend.txt";
 		// JPanel
 		add(getBoard(), BorderLayout.CENTER);
-		setSize(750,950);
+		setSize(750,750);
+		// ClueGUI
+		add(new ClueGUI(), BorderLayout.SOUTH);
+		// CardPanel
 		// JFrame
 		JMenuBar file = new JMenuBar();
 		setJMenuBar(file);
@@ -311,6 +315,8 @@ public class ClueGame extends JFrame {
 		game.setVisible(true);
 		game.loadPlayers();
 		game.getBoard().paintComponent(game.getGraphics());
+		JOptionPane.showMessageDialog(game,"You are Miss Scarlet, press Next Player to begin.","Welcome to Clue!",JOptionPane.INFORMATION_MESSAGE);
+		
 	}
 
 }

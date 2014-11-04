@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 public class WalkwayCell extends BoardCell{
 
+	public static final int CELL_SIZE = 20;
 	public WalkwayCell() {
 		// TODO Auto-generated constructor stub
 	}
@@ -16,8 +17,8 @@ public class WalkwayCell extends BoardCell{
 	public void draw(Graphics g, Board b){
 		// Walkway cells	
 		g.setColor(Color.YELLOW);
-		g.fillRect(30*getCol(), 30*getRow(), 30, 30);
+		g.fillRect(CELL_SIZE*getCol(), CELL_SIZE*getRow(), CELL_SIZE, CELL_SIZE);
 		g.setColor(Color.BLACK);
-		g.drawRect(30*getCol(), 30*getRow(), 30, 30);
+		g.drawRect(CELL_SIZE*getCol(), CELL_SIZE*getRow(), CELL_SIZE, CELL_SIZE);
 	}
 }
