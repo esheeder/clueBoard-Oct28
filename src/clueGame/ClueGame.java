@@ -76,8 +76,8 @@ public class ClueGame extends JFrame {
 		boardLayout="ClueBoardLayout.csv";
 		legend="ClueLegend.txt";
 		// JPanel
-		add(getBoard(), BorderLayout.CENTER);
 		setSize(750,750);
+		add(getBoard(), BorderLayout.CENTER);
 		// ClueGUI
 		add(new ClueGUI(), BorderLayout.SOUTH);
 		// CardPanel
@@ -312,9 +312,11 @@ public class ClueGame extends JFrame {
 		game.loadConfigFiles();
 		game.setTitle("Clue");
 		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		game.setVisible(true);
+		
 		game.loadPlayers();
-		game.getBoard().paintComponent(game.getGraphics());
+		//game.getBoard().repaint()
+		game.add(new CardPanel(game.getPlayers().get(0).getMyCards()),BorderLayout.EAST);
+		game.setVisible(true);
 		JOptionPane.showMessageDialog(game,"You are Miss Scarlet, press Next Player to begin.","Welcome to Clue!",JOptionPane.INFORMATION_MESSAGE);
 		
 	}
