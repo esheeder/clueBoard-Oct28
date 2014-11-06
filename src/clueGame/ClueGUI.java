@@ -92,10 +92,9 @@ public class ClueGUI extends JPanel {
 				if(false){
 					JOptionPane.showMessageDialog(game, "You must finish your turn!");
 				} else {
-					System.out.println("making a move");
-					game.getCurrentPlayer().makeMove(board,roll());
-					int index = game.getPlayers().indexOf(currentPlayer);
-					game.setCurrentPlayer(game.getPlayers().get(index));
+					System.out.println("making a move for player:" + game.getCurrentPlayer());
+					game.getPlayers().get(game.getCurrentPlayer()).makeMove(board,roll());
+					game.setNextPlayer();
 				}
 				
 			}
@@ -103,7 +102,7 @@ public class ClueGUI extends JPanel {
 	}
 	public int roll(){
 		Random r = new Random();
-		int roll = r.nextInt(7);
+		int roll = r.nextInt(5) + 1;
 		//Update roll panel
 		//Repaint?
 		return roll;
@@ -113,11 +112,12 @@ public class ClueGUI extends JPanel {
 	}
 	public ClueGUI(Board b,ClueGame game){
 		this.board = b;
+		board.calcAdjacencies();
+		this.game = game;
 		setLayout(new GridLayout(2,4));
 		
 		/*
 		// Contents of North Layout
-		JPanel nPanel = new JPanel();
 		nPanel = northPanel();
 		add(nPanel);
 		*/

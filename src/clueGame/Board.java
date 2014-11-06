@@ -34,6 +34,7 @@ public class Board extends JPanel {
 		visited= new HashSet<BoardCell>();
 		targets= new HashSet<BoardCell>();
 		this.game = game;
+		calcAdjacencies();
 	}
 
 	// draw the board

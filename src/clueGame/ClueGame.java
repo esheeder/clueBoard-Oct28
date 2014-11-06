@@ -25,7 +25,7 @@ public class ClueGame extends JFrame {
 	private Map<Character, String> rooms;
 	private ArrayList<Card> cards;
 	private ArrayList<Player> players;
-	private Player currentPlayer;
+	private int currentPlayer;
 	private Board board;
 	private Solution solution;
 	private int numOfPlayers = 0;
@@ -75,21 +75,25 @@ public class ClueGame extends JFrame {
 	public ClueGame() {
 		rooms=new HashMap<Character, String>();
 		board=new Board(this);
+		board.calcAdjacencies();
 		boardLayout="ClueBoardLayout.csv";
 		legend="ClueLegend.txt";
 		loadConfigFiles();
 		loadPlayers();
+		loadCards();
+		deal();
 		// JPanel
 		setSize(750,750);
 		add(getBoard(), BorderLayout.CENTER);
 		// ClueGUI
 		add(new ClueGUI(board,this), BorderLayout.SOUTH);
 		// CardPanel
+		add(new CardPanel(players.get(0).getMyCards()),BorderLayout.EAST);
 		// JFrame
 		JMenuBar file = new JMenuBar();
 		setJMenuBar(file);
 		file.add(createFileMenu());
-		currentPlayer = players.get(0);
+		currentPlayer = 0;
 		playerMustFinish = false;
 	}
 	public ClueGame(String boardLayout, String legend) {
@@ -282,8 +286,9 @@ public class ClueGame extends JFrame {
 		return players;
 	}
 	
-	public void setCurrentPlayer(Player currentPlayer) {
-		this.currentPlayer = currentPlayer;
+	public void setNextPlayer() {
+		if (currentPlayer == 5) currentPlayer = 0;
+		else currentPlayer++;
 	}
 
 	public boolean isPlayerMustFinish() {
@@ -314,7 +319,7 @@ public class ClueGame extends JFrame {
 	public int getCardsLeft() {
 		return cardsLeft;
 	}
-	public Player getCurrentPlayer() {
+	public int getCurrentPlayer() {
 		return currentPlayer;
 	}
 
@@ -332,7 +337,6 @@ public class ClueGame extends JFrame {
 		ClueGame game = new ClueGame();
 		game.setTitle("Clue");
 		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 		
 		//game.getBoard().repaint()
 		game.add(new CardPanel(game.getPlayers().get(0).getMyCards()),BorderLayout.EAST);
