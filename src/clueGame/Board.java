@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Board extends JPanel implements MouseListener{
@@ -66,12 +67,9 @@ public class Board extends JPanel implements MouseListener{
 	public void mouseExited(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}
 	public void mousePressed(MouseEvent e){
-		//TODO If it's the players turn AND it's a valid move, move the player, and remove the flag (Suggestion making to come)
-		System.out.println(e.getX() + " "+ e.getY());
 		if(game.isPlayerMustFinish()){
 			//Only do something if it's the player's turn
 			BoardCell cell = cellClicked(e.getX(),e.getY());
-			System.out.println(cell.getRow()+ " "+ cell.getCol());
 			if(targets.contains(cell)){
 				//Initiate the move
 				Player human = game.getPlayers().get(0);
@@ -80,7 +78,8 @@ public class Board extends JPanel implements MouseListener{
 				//Unflag because turn is over
 				game.setPlayerMustFinish(false);
 				repaint();
-			}
+			} else
+				JOptionPane.showMessageDialog(game, "Invalid move, select a highlighted square.");
 		}
 		
 	}
