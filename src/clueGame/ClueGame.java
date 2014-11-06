@@ -341,7 +341,7 @@ public class ClueGame extends JFrame {
 		//game.getBoard().repaint()
 		game.add(new CardPanel(game.getPlayers().get(0).getMyCards()),BorderLayout.EAST);
 		game.setVisible(true);
-		JOptionPane.showMessageDialog(game,"You are Miss Scarlet, press Next Player to begin.","Welcome to Clue!",JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(game,"You are Professor Plum, press Next Player to begin.","Welcome to Clue!",JOptionPane.INFORMATION_MESSAGE);
 		
 	}
 

@@ -25,7 +25,8 @@ public class ClueGUI extends JPanel {
 	private JTextField response;
 	private JButton nextPlayer;
 	private JButton makeAccusation;
-	private Player currentPlayer;
+	private String currentPlayer;
+	private String rollString;
 	private Board board;
 	private ClueGame game;
 
@@ -48,6 +49,8 @@ public class ClueGUI extends JPanel {
 		JPanel panel = new JPanel();
 		JLabel whoseTurnLabel = new JLabel("Whose Turn?");
 		whoseTurn = new JTextField(15);
+		//this could be not hard coded, maybe check it later
+		whoseTurn.setText("professor plum");
 		panel.add(whoseTurnLabel);
 		panel.add(whoseTurn);
 		return panel;
@@ -92,9 +95,9 @@ public class ClueGUI extends JPanel {
 				if(false){
 					JOptionPane.showMessageDialog(game, "You must finish your turn!");
 				} else {
-					System.out.println("making a move for player:" + game.getCurrentPlayer());
-					game.getPlayers().get(game.getCurrentPlayer()).makeMove(board,roll());
 					game.setNextPlayer();
+					whoseTurn.setText(game.getPlayers().get(game.getCurrentPlayer()).getName());
+					game.getPlayers().get(game.getCurrentPlayer()).makeMove(board,roll());
 				}
 				
 			}
@@ -104,11 +107,9 @@ public class ClueGUI extends JPanel {
 		Random r = new Random();
 		int roll = r.nextInt(5) + 1;
 		//Update roll panel
+		this.roll.setText(Integer.toString(roll));
 		//Repaint?
 		return roll;
-	}
-	public void setCurrentPlayer(Player currentPlayer) {
-		this.currentPlayer = currentPlayer;
 	}
 	public ClueGUI(Board b,ClueGame game){
 		this.board = b;
