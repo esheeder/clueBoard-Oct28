@@ -25,6 +25,7 @@ public class ClueGame extends JFrame {
 	private Map<Character, String> rooms;
 	private ArrayList<Card> cards;
 	private ArrayList<Player> players;
+	private Player currentPlayer;
 	private Board board;
 	private Solution solution;
 	private int numOfPlayers = 0;
@@ -34,6 +35,7 @@ public class ClueGame extends JFrame {
 	private DetectiveNotes myDN;
 	public static String boardLayout;
 	public static String legend;
+	private boolean playerMustFinish;
 	
 	// Menu
 	private JMenu createFileMenu() {
@@ -75,16 +77,20 @@ public class ClueGame extends JFrame {
 		board=new Board(this);
 		boardLayout="ClueBoardLayout.csv";
 		legend="ClueLegend.txt";
+		loadConfigFiles();
+		loadPlayers();
 		// JPanel
 		setSize(750,750);
 		add(getBoard(), BorderLayout.CENTER);
 		// ClueGUI
-		add(new ClueGUI(), BorderLayout.SOUTH);
+		add(new ClueGUI(board,this), BorderLayout.SOUTH);
 		// CardPanel
 		// JFrame
 		JMenuBar file = new JMenuBar();
 		setJMenuBar(file);
 		file.add(createFileMenu());
+		currentPlayer = players.get(0);
+		playerMustFinish = false;
 	}
 	public ClueGame(String boardLayout, String legend) {
 		rooms=new HashMap<Character, String>();
@@ -276,6 +282,18 @@ public class ClueGame extends JFrame {
 		return players;
 	}
 	
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
+	public boolean isPlayerMustFinish() {
+		return playerMustFinish;
+	}
+
+	public void setPlayerMustFinish(boolean playerMustFinish) {
+		this.playerMustFinish = playerMustFinish;
+	}
+
 	//Used for testing
 	public void setPlayers(ArrayList<Player> somePlayers) {
 		players = somePlayers;
@@ -296,7 +314,10 @@ public class ClueGame extends JFrame {
 	public int getCardsLeft() {
 		return cardsLeft;
 	}
-	
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+
 	// set an answer for testing
 	public void setAnswer() {
 		solution = new Solution();
@@ -309,11 +330,10 @@ public class ClueGame extends JFrame {
 	// used to display the board GUI
 	public static void main(String[] args) {
 		ClueGame game = new ClueGame();
-		game.loadConfigFiles();
 		game.setTitle("Clue");
 		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		game.loadPlayers();
+		
 		//game.getBoard().repaint()
 		game.add(new CardPanel(game.getPlayers().get(0).getMyCards()),BorderLayout.EAST);
 		game.setVisible(true);

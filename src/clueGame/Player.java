@@ -6,7 +6,7 @@ import java.text.Format.Field;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
-public class Player {
+public abstract class Player {
 
 	public static final int CELL_SIZE = 20;
 	private String name;
@@ -62,6 +62,7 @@ public class Player {
 		}
 		return null;
 	}
+	public abstract void makeMove(Board b, int Roll);
 
 	public String getName() {
 		return name;
@@ -78,6 +79,17 @@ public class Player {
 	public int getY() {
 		return y;
 	}
+	
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
 
 	public ArrayList<Card> getMyCards() {
 		return myCards;

@@ -26,7 +26,13 @@ public class ComputerPlayer extends Player {
 		
 	}
 
-	
+	public void makeMove(Board b, int roll){
+		b.calcTargets(getX(),getY(),roll);
+		BoardCell destination = pickLocation(b.getTargets());
+		setX(destination.getRow());
+		setY(destination.getCol());
+		b.repaint();
+	}
 
 	public BoardCell pickLocation(Set<BoardCell> targets) {
 		for (BoardCell b: targets) {

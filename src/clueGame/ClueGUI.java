@@ -2,10 +2,14 @@ package clueGame;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
@@ -19,6 +23,11 @@ public class ClueGUI extends JPanel {
 	private JTextField roll;
 	private JTextField guess;
 	private JTextField response;
+	private JButton nextPlayer;
+	private JButton makeAccusation;
+	private Player currentPlayer;
+	private Board board;
+	private ClueGame game;
 
 	// Contents of northPanel: Whose turn label and text-box, Next Player
 	// and Make Accusation buttons
@@ -76,8 +85,34 @@ public class ClueGUI extends JPanel {
 		panel.setBorder(new TitledBorder(new EtchedBorder(), "Guess Result"));
 		return panel;
 	}
-
-	public ClueGUI(){
+	private class ButtonListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() == nextPlayer){
+				if(false){
+					JOptionPane.showMessageDialog(game, "You must finish your turn!");
+				} else {
+					System.out.println("making a move");
+					game.getCurrentPlayer().makeMove(board,roll());
+					int index = game.getPlayers().indexOf(currentPlayer);
+					game.setCurrentPlayer(game.getPlayers().get(index));
+				}
+				
+			}
+		}
+	}
+	public int roll(){
+		Random r = new Random();
+		int roll = r.nextInt(7);
+		//Update roll panel
+		//Repaint?
+		return roll;
+	}
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+	public ClueGUI(Board b,ClueGame game){
+		this.board = b;
 		setLayout(new GridLayout(2,4));
 		
 		/*
@@ -89,11 +124,11 @@ public class ClueGUI extends JPanel {
 		//WhosePanel
 		JPanel whosePanel = whosePanel();
 		add(whosePanel);
-		JButton nextPlayer = new JButton("Next Player");
-		JButton makeAccusation = new JButton("Make Accusation");
+		nextPlayer = new JButton("Next Player");
+		makeAccusation = new JButton("Make Accusation");
 		add(nextPlayer);
 		add(makeAccusation);
-		
+		nextPlayer.addActionListener(new ButtonListener());
 		// Contents of West Layout
 		JPanel wPanel = new JPanel();
 		wPanel = rollPanel();
