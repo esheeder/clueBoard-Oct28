@@ -55,9 +55,12 @@ public class RoomCell extends BoardCell{
 		return roomInitial;
 	}
 	@Override
-	public void draw(Graphics g, Board b){
+	public void draw(Graphics g, Board b, Color c){
 		//Rooms are 30 pixels by 30 pixels
-		g.setColor(Color.gray);
+		if(c == Color.YELLOW)
+			g.setColor(Color.gray);
+		else if(c == Color.BLUE)
+			g.setColor(Color.BLUE);
 		g.fillRect(CELL_SIZE*getCol(), CELL_SIZE*getRow(), CELL_SIZE, CELL_SIZE);
 		
 		//Doors are blue and 5x30

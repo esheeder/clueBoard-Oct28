@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -21,7 +22,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-public class ClueGame extends JFrame {
+public class ClueGame extends JFrame{
 	private Map<Character, String> rooms;
 	private ArrayList<Card> cards;
 	private ArrayList<Player> players;
@@ -93,7 +94,7 @@ public class ClueGame extends JFrame {
 		JMenuBar file = new JMenuBar();
 		setJMenuBar(file);
 		file.add(createFileMenu());
-		currentPlayer = 0;
+		currentPlayer = -1;
 		playerMustFinish = false;
 	}
 	public ClueGame(String boardLayout, String legend) {
@@ -172,7 +173,6 @@ public class ClueGame extends JFrame {
 		cards.remove(p);
 		
 		Collections.shuffle(cards);
-		Collections.shuffle(players);
 		int playerNum = 0;
 		for(int i = 0; i < getCards().size(); i++) {
 			if(playerNum >= 6) {
@@ -254,6 +254,7 @@ public class ClueGame extends JFrame {
 			}
 			
 		}
+		
 	}
 	
 	public Card handleSuggestion(String person, String room, String weapon, Player accusingPerson) {
@@ -286,9 +287,14 @@ public class ClueGame extends JFrame {
 		return players;
 	}
 	
-	public void setNextPlayer() {
-		if (currentPlayer == 5) currentPlayer = 0;
+	public void advanceToNextPlayer() {
+		if (currentPlayer == 5){ 
+			currentPlayer = 0;
+		}
 		else currentPlayer++;
+		if(currentPlayer == 0){
+			playerMustFinish = true;
+		}
 	}
 
 	public boolean isPlayerMustFinish() {
@@ -332,6 +338,8 @@ public class ClueGame extends JFrame {
 	}
 	
 	
+	
+
 	// used to display the board GUI
 	public static void main(String[] args) {
 		ClueGame game = new ClueGame();

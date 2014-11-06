@@ -20,7 +20,7 @@ import javax.swing.border.TitledBorder;
 public class ClueGUI extends JPanel {
 
 	private JTextField whoseTurn;
-	private JTextField roll;
+	JTextField roll;
 	private JTextField guess;
 	private JTextField response;
 	private JButton nextPlayer;
@@ -92,12 +92,22 @@ public class ClueGUI extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == nextPlayer){
-				if(false){
+				if(game.isPlayerMustFinish()){
 					JOptionPane.showMessageDialog(game, "You must finish your turn!");
 				} else {
-					game.setNextPlayer();
+					game.advanceToNextPlayer();
 					whoseTurn.setText(game.getPlayers().get(game.getCurrentPlayer()).getName());
+					if(game.isPlayerMustFinish()){
+						Player humanPlayer = game.getPlayers().get((game.getCurrentPlayer()));
+						board.calcTargets(humanPlayer.getX(), humanPlayer.getY(), roll());
+						//Paint the targets, wait for click in board
+						board.repaint();
+					}
+					else{
+					//ComputerPlayer Move
 					game.getPlayers().get(game.getCurrentPlayer()).makeMove(board,roll());
+					}
+					
 				}
 				
 			}
@@ -105,7 +115,7 @@ public class ClueGUI extends JPanel {
 	}
 	public int roll(){
 		Random r = new Random();
-		int roll = r.nextInt(5) + 1;
+		int roll = r.nextInt(6)+1;
 		//Update roll panel
 		this.roll.setText(Integer.toString(roll));
 		//Repaint?

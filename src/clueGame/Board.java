@@ -3,7 +3,10 @@ package clueGame;
 import clueGame.BoardCell;
 import clueGame.RoomCell.DoorDirection;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -16,7 +19,9 @@ import java.util.Set;
 
 import javax.swing.JPanel;
 
-public class Board extends JPanel {
+public class Board extends JPanel implements MouseListener{
+	public static final int CELL_SIZE = 20;
+	
 	private int numRows;
 	private int numCols;
 	private BoardCell[][] boardLayout; 
@@ -24,17 +29,16 @@ public class Board extends JPanel {
 	private Map<Character, String> rooms;
 	private Set<BoardCell> visited;
 	//Map for adj matrix calculations
-	private Map<Integer, LinkedList<BoardCell>> adjMtx;
-	private BoardCell startingCell;
-	private Set<BoardCell> deadEnds = new HashSet<BoardCell>();
+	private Map<BoardCell, LinkedList<BoardCell>> adjMtx;
 	//private ArrayList<Player> players = new ArrayList<Player>();
 	private ClueGame game;
 	public Board(ClueGame game) {
-		adjMtx= new HashMap<Integer, LinkedList<BoardCell>>();
+		adjMtx= new HashMap<BoardCell, LinkedList<BoardCell>>();
 		visited= new HashSet<BoardCell>();
 		targets= new HashSet<BoardCell>();
 		this.game = game;
 		calcAdjacencies();
+		addMouseListener(this);
 	}
 
 	// draw the board
@@ -42,16 +46,52 @@ public class Board extends JPanel {
 		super.paintComponent(g);
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numCols; j++) {
-				boardLayout[i][j].draw(g, this);
+				boardLayout[i][j].draw(g, this, Color.YELLOW);
 			}
 		}
 
 		for (Player p : game.getPlayers()) {
 			p.draw(g);
 		}
+		//If it is the human's turn, display their targets
+		if(game.isPlayerMustFinish()){
+			for(BoardCell b : targets){
+				b.draw(g, this, Color.BLUE);
+			}
+		}
 	}
-
-
+	//MouseListening
+	public void mouseClicked(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {}
+	public void mousePressed(MouseEvent e){
+		//TODO If it's the players turn AND it's a valid move, move the player, and remove the flag (Suggestion making to come)
+		System.out.println(e.getX() + " "+ e.getY());
+		if(game.isPlayerMustFinish()){
+			//Only do something if it's the player's turn
+			BoardCell cell = cellClicked(e.getX(),e.getY());
+			System.out.println(cell.getRow()+ " "+ cell.getCol());
+			if(targets.contains(cell)){
+				//Initiate the move
+				Player human = game.getPlayers().get(0);
+				human.setX(cell.getRow());
+				human.setY(cell.getCol());
+				//Unflag because turn is over
+				game.setPlayerMustFinish(false);
+				repaint();
+			}
+		}
+		
+	}
+	public BoardCell cellClicked(int x, int y){
+		//Use int division to find cell coord
+		int col = x/CELL_SIZE;
+		int row = y/CELL_SIZE;
+		if(col < numCols && row < numRows)
+			return boardLayout[row][col];
+		return null;
+	}
 	//tell boardLayout what size to be
 	public void initializeBoardLayout(){
 		FileReader reader= null;
@@ -177,6 +217,7 @@ public class Board extends JPanel {
 	public void setRooms( Map<Character,String> rooms){
 		this.rooms=rooms;
 	}
+	/*
 	public void calcTargets(int row, int col, int roll) {
 		targets.clear();
 		if(visited.isEmpty())
@@ -227,7 +268,7 @@ public class Board extends JPanel {
 			targets.remove(deadend);
 		}
 	}
-
+	*/
 	public Set<BoardCell> getTargets() {
 		return targets;
 	}
@@ -235,7 +276,102 @@ public class Board extends JPanel {
 	public LinkedList<BoardCell> getAdjList(int row, int col) {
 		return adjMtx.get(getCellNumber(row,col));
 	}
+	public void calcAdjacencies() {
+		adjMtx = new HashMap<BoardCell, LinkedList<BoardCell>>();
+		// Calculate a list for each cell on the board
+		for (int i = 0; i < numRows; i++) {
+			for (int j = 0; j < numCols; j++) {
+				BoardCell currentCell = boardLayout[i][j];
+				// Simple case, if cell is a doorway then only adj is direction
+				// of doorway
+				if (currentCell.isDoorway()) {
+					// Convert BoardCell to RoomCell
+					RoomCell currentRoomCell = (RoomCell) currentCell;
+					// Create the LinkedList and add the appropriate direction
+					LinkedList<BoardCell> currentAdjList = new LinkedList<BoardCell>();
+					if (currentRoomCell.getDoorDirection() == DoorDirection.DOWN)
+						currentAdjList.add(boardLayout[i + 1][j]);
+					else if (currentRoomCell.getDoorDirection() == DoorDirection.RIGHT)
+						currentAdjList.add(boardLayout[i][j + 1]);
+					else if (currentRoomCell.getDoorDirection() == DoorDirection.LEFT)
+						currentAdjList.add(boardLayout[i][j - 1]);
+					else if (currentRoomCell.getDoorDirection() == DoorDirection.UP)
+						currentAdjList.add(boardLayout[i - 1][j]);
+					// Add the pair to the adjList map
+					adjMtx.put(currentCell, currentAdjList);
+				} else if (currentCell.isRoom()) {
+					// Add an empty list
+					adjMtx.put(currentCell, new LinkedList<BoardCell>());
+				} else if (currentCell.isWalkway()) {
+					// Create the linked list and add all directions if they are
+					// allowed moves
+					LinkedList<BoardCell> currentAdjList = new LinkedList<BoardCell>();
+					if (isViableMove(i + 1, j, DoorDirection.UP))
+						currentAdjList.add(boardLayout[i + 1][j]);
+					if (isViableMove(i - 1, j, DoorDirection.DOWN))
+						currentAdjList.add(boardLayout[i - 1][j]);
+					if (isViableMove(i, j + 1, DoorDirection.LEFT))
+						currentAdjList.add(boardLayout[i][j + 1]);
+					if (isViableMove(i, j - 1, DoorDirection.RIGHT))
+						currentAdjList.add(boardLayout[i][j - 1]);
+					// Add the linked list to the map
+					adjMtx.put(boardLayout[i][j], currentAdjList);
+				}
+			}
+		}
+	}
 
+	public boolean isViableMove(int row, int col, DoorDirection allowedDoorDirection) {
+		// If the cell is out of bounds return false
+		if (row < 0 || row >= numRows)
+			return false;
+		if (col < 0 || col >= numCols)
+			return false;
+		// If cell is a room cell, check allowed direction
+		if (getCellAt(row, col).isRoom()) {
+			if (getCellAt(row, col).isDoorway()) {
+				RoomCell aRoomCell = (RoomCell) getCellAt(row, col);
+				if (allowedDoorDirection == aRoomCell.getDoorDirection())
+					return true;
+			}
+			// Not a doorway, return false
+			return false;
+		}
+		// Must be a walkway
+		return true;
+	}
+	
+	public void calcTargets(int row, int col, int moves){
+		targets = new HashSet<BoardCell>();
+		visited = new HashSet<BoardCell>();
+		visited.add(getCellAt(row, col));
+		findAllTargets(getCellAt(row, col), moves);
+	}
+	
+	public void findAllTargets(BoardCell cell, int moves){
+		LinkedList<BoardCell> adjCells = nonVisitedAdjCells(cell);
+		for(BoardCell c : adjCells){
+			visited.add(c);
+			if(moves == 1 || c.isDoorway())
+				targets.add(c);
+			else
+				findAllTargets(c, moves-1);
+			visited.remove(c);
+		}
+		
+	}
+	
+	public LinkedList<BoardCell> nonVisitedAdjCells(BoardCell cell){
+		LinkedList<BoardCell> nonVisitedCells = new LinkedList<BoardCell>();
+		LinkedList<BoardCell> adjLinkedList = adjMtx.get(cell);
+		for(BoardCell c : adjLinkedList){
+			if(!visited.contains(c)){
+				nonVisitedCells.add(c);
+			}
+		}
+		return nonVisitedCells;
+	}
+	/*
 	public void calcAdjacencies(){
 		int cellNumber = 0;
 		cellNumber=0;
@@ -246,6 +382,7 @@ public class Board extends JPanel {
 			}
 		}
 	}
+	
 	private void populateAdjMtx(int cellNum, int row, int col){
 		LinkedList<BoardCell> adjCells=new LinkedList<BoardCell>();
 		if(boardLayout[row][col].isRoom() && !boardLayout[row][col].isDoorway()){
@@ -314,7 +451,7 @@ public class Board extends JPanel {
 		}
 		adjMtx.put(cellNum, adjCells);
 	}
-
+	*/
 
 
 }
