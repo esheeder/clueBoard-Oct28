@@ -328,6 +328,10 @@ public class ClueGame extends JFrame{
 	public int getCurrentPlayer() {
 		return currentPlayer;
 	}
+	
+	public Map<Character, String> getRooms() {
+		return rooms;
+	}
 
 	// set an answer for testing
 	public void setAnswer() {

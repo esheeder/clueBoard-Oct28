@@ -104,12 +104,33 @@ public class ClueGUI extends JPanel {
 						board.repaint();
 					}
 					else{
-					//ComputerPlayer Move
-					game.getPlayers().get(game.getCurrentPlayer()).makeMove(board,roll());
+						//Find the player
+						ComputerPlayer currentPlayer = (ComputerPlayer) game.getPlayers().get(game.getCurrentPlayer());
+						//ComputerPlayer Move
+						currentPlayer.makeMove(board,roll());
+						//Need to check if the destination is a room
+						BoardCell location = board.getCellAt(currentPlayer.getX(), currentPlayer.getY());
+						if(location.isRoom()){
+							// It's a room, get a create a suggestion and update display
+							RoomCell roomLoc = (RoomCell) location;
+							String room = game.getRooms().get(roomLoc.getInitial());
+							Solution s = currentPlayer.createSuggestion(room);
+							//Update the display with the suggestion
+							guess.setText(s.person + ", "+s.weapon+", "+s.room);
+							Card shown = game.handleSuggestion(s.person, s.room, s.weapon, currentPlayer);
+							response.setText(shown.toString());
+							for(Player p : game.getPlayers()){
+								//Iterate through the players to find the suggested, the move
+								if(s.person == p.getName()){
+									p.setX(currentPlayer.getX());
+									p.setY(currentPlayer.getY());
+								}
+							}
+						}
 					}
-					
+
 				}
-				
+
 			}
 		}
 	}
@@ -126,12 +147,12 @@ public class ClueGUI extends JPanel {
 		board.calcAdjacencies();
 		this.game = game;
 		setLayout(new GridLayout(2,4));
-		
+
 		/*
 		// Contents of North Layout
 		nPanel = northPanel();
 		add(nPanel);
-		*/
+		 */
 		//WhosePanel
 		JPanel whosePanel = whosePanel();
 		add(whosePanel);
