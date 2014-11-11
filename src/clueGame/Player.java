@@ -14,7 +14,7 @@ public abstract class Player {
 	private int x;
 	private int y;
 	private ArrayList<Card> myCards;
-	
+	private char lastRoomVisited;
 	public Player() {
 		myCards = new ArrayList<Card>();
 	}
@@ -106,8 +106,18 @@ public abstract class Player {
 		g.drawOval(CELL_SIZE*y, CELL_SIZE*x, CELL_SIZE, CELL_SIZE);
 	}
 	
-	public void fillCardArrays(Card c) {
-		
+	public abstract void fillCardArrays(Card c);
+
+
+	public char getLastRoomVisited() {
+		return lastRoomVisited;
 	}
+
+
+	public void setLastRoomVisited(char lastRoomVisited) {
+		this.lastRoomVisited = lastRoomVisited;
+	}
+
 	
+
 }

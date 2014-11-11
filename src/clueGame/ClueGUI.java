@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -91,6 +92,34 @@ public class ClueGUI extends JPanel {
 	private class ButtonListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() == makeAccusation){
+				//Must be players turn
+				if(!game.isPlayerMustFinish())
+					JOptionPane.showMessageDialog(game, "It has to be your turn!");
+				else{
+					HumanPlayer human = (HumanPlayer) game.getPlayers().get(0);
+					JComboBox<Object> peopleCB = new JComboBox<Object>(human.peopleCards.toArray());
+					JComboBox<Object> weaponCB = new JComboBox<Object>(human.weaponCards.toArray());
+					JComboBox<Object> roomCB = new JComboBox<Object>(human.roomCards.toArray());
+					Object[] message = { "Room: ", roomCB, "Person: ", peopleCB, "Weapon: ", weaponCB};
+					JOptionPane.showMessageDialog(game, message, "Accusation!", JOptionPane.OK_OPTION);
+					String person = peopleCB.getSelectedItem().toString();
+					String weapon = weaponCB.getSelectedItem().toString();
+					String room = roomCB.getSelectedItem().toString();
+					Solution soln = new Solution(person,weapon,room);
+					if(game.checkAccusation(soln)){
+						Object[] options = {"Ok"};
+						int input = JOptionPane.showOptionDialog(game, "Correct Accusation! You Win!", "You don't suck", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
+						if(input == 0)
+							System.exit(0);
+					}else{
+						Object[] options = {"Ok"};
+						JOptionPane.showOptionDialog(game, "Incorrect", "You suck", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
+						game.setPlayerMustFinish(false);
+						board.repaint();
+					}
+				}
+			}
 			if(e.getSource() == nextPlayer){
 				if(game.isPlayerMustFinish()){
 					JOptionPane.showMessageDialog(game, "You must finish your turn!");
@@ -107,6 +136,15 @@ public class ClueGUI extends JPanel {
 						//Find the player
 						ComputerPlayer currentPlayer = (ComputerPlayer) game.getPlayers().get(game.getCurrentPlayer());
 						//ComputerPlayer Move
+						if(currentPlayer.isCanMakeAccusation()){
+							if(game.checkAccusation(currentPlayer.getPossibleSolution())){
+								Object[] message = { currentPlayer.getName(), " has won!" };
+								Object[] options = {"Ok"};
+								int input = JOptionPane.showOptionDialog(game, message, "You suck", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
+								if(input == 0)
+									System.exit(0);
+							}	
+						}
 						currentPlayer.makeMove(board,roll());
 						//Need to check if the destination is a room
 						BoardCell location = board.getCellAt(currentPlayer.getX(), currentPlayer.getY());
@@ -118,12 +156,19 @@ public class ClueGUI extends JPanel {
 							//Update the display with the suggestion
 							guess.setText(s.person + ", "+s.weapon+", "+s.room);
 							Card shown = game.handleSuggestion(s.person, s.room, s.weapon, currentPlayer);
-							response.setText(shown.toString());
+							if(shown == null){
+								response.setText("No cards");
+								currentPlayer.setCanMakeAccusation(true);
+								currentPlayer.setPossibleSolution(s);
+							}
+							else
+								response.setText(shown.toString());
 							for(Player p : game.getPlayers()){
 								//Iterate through the players to find the suggested, the move
-								if(s.person == p.getName()){
+								if(s.person.equals(p.getName())){
 									p.setX(currentPlayer.getX());
 									p.setY(currentPlayer.getY());
+									p.setLastRoomVisited(roomLoc.getInitial());
 								}
 							}
 						}
@@ -141,6 +186,14 @@ public class ClueGUI extends JPanel {
 		this.roll.setText(Integer.toString(roll));
 		//Repaint?
 		return roll;
+	}
+	
+	
+	public JTextField getGuess() {
+		return guess;
+	}
+	public JTextField getResponse() {
+		return response;
 	}
 	public ClueGUI(Board b,ClueGame game){
 		this.board = b;
@@ -161,6 +214,7 @@ public class ClueGUI extends JPanel {
 		add(nextPlayer);
 		add(makeAccusation);
 		nextPlayer.addActionListener(new ButtonListener());
+		makeAccusation.addActionListener(new ButtonListener());
 		// Contents of West Layout
 		JPanel wPanel = new JPanel();
 		wPanel = rollPanel();

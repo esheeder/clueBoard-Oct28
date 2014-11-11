@@ -75,13 +75,18 @@ public class Board extends JPanel implements MouseListener{
 				Player human = game.getPlayers().get(0);
 				human.setX(cell.getRow());
 				human.setY(cell.getCol());
+				//If the cell is a room use a method in player to pop-up a suggestion
+				if(cell.isRoom()){
+					RoomCell rCell = (RoomCell) cell;
+					String room = game.getRooms().get(rCell.getInitial());
+					game.showSuggestWindow(room);
+				}
 				//Unflag because turn is over
 				game.setPlayerMustFinish(false);
 				repaint();
 			} else
 				JOptionPane.showMessageDialog(game, "Invalid move, select a highlighted square.");
 		}
-		
 	}
 	public BoardCell cellClicked(int x, int y){
 		//Use int division to find cell coord

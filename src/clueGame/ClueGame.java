@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -37,6 +38,7 @@ public class ClueGame extends JFrame{
 	public static String boardLayout;
 	public static String legend;
 	private boolean playerMustFinish;
+	private ClueGUI gui;
 	
 	// Menu
 	private JMenu createFileMenu() {
@@ -87,7 +89,8 @@ public class ClueGame extends JFrame{
 		setSize(750,750);
 		add(getBoard(), BorderLayout.CENTER);
 		// ClueGUI
-		add(new ClueGUI(board,this), BorderLayout.SOUTH);
+		gui = new ClueGUI(board,this);
+		add(gui, BorderLayout.SOUTH);
 		// CardPanel
 		add(new CardPanel(players.get(0).getMyCards()),BorderLayout.EAST);
 		// JFrame
@@ -152,7 +155,12 @@ public class ClueGame extends JFrame{
 	public void deal() {
 		Random rn = new Random();
 		solution = new Solution();
-		
+		//Fill the cards for players
+		for(Player pa : players) {
+			for (Card c : cards) {
+				pa.fillCardArrays(c);
+			}
+		}
 		//Randomly selecting a person, weapon, and room
 		int p = rn.nextInt(6);
 		int w = rn.nextInt(6) + 6;
@@ -161,11 +169,7 @@ public class ClueGame extends JFrame{
 		solution.weapon = cards.get(w).getName();
 		solution.room = cards.get(r).getName();
 		
-		for(Player pa : players) {
-			for (Card c : cards) {
-				pa.fillCardArrays(c);
-			}
-		}
+		
 		
 		//Removing the person, weapon, and room selected
 		cards.remove(r);
@@ -356,5 +360,29 @@ public class ClueGame extends JFrame{
 		JOptionPane.showMessageDialog(game,"You are Professor Plum, press Next Player to begin.","Welcome to Clue!",JOptionPane.INFORMATION_MESSAGE);
 		
 	}
+
+	public void showSuggestWindow(String room) {
+		HumanPlayer human = (HumanPlayer) players.get(0);
+		JComboBox<Object> peopleCB = new JComboBox<Object>(human.peopleCards.toArray());
+		JComboBox<Object> weaponCB = new JComboBox<Object>(human.weaponCards.toArray());
+		Object[] message = { "Room: ", room, "Person: ", peopleCB, "Weapon: ", weaponCB};
+		JOptionPane.showMessageDialog(this,message,"Make a suggestion",JOptionPane.OK_OPTION);
+		String person = peopleCB.getSelectedItem().toString();
+		String weapon = weaponCB.getSelectedItem().toString();
+		Card c = handleSuggestion(person, room, weapon, human);
+		//Move the person
+		for(Player p : players){
+			if(p.getName().equals(person)){
+				p.setX(human.getX());
+				p.setY(human.getY());
+			}
+		}
+		gui.getGuess().setText(person + ", "+ room + ", " + weapon);
+		if(c == null)
+			gui.getResponse().setText("No Card");
+		else		
+			gui.getResponse().setText(c.getName());
+	}
+
 
 }

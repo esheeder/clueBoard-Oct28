@@ -5,14 +5,17 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 
+import clueGame.Card.CardType;
+
 
 public class ComputerPlayer extends Player {
 	
-	private char lastRoomVisited;
 	ArrayList<String> cardsSeen;
 	ArrayList<String> peopleCards;
 	ArrayList<String> weaponCards;
 	ArrayList<String> roomCards;
+	private boolean canMakeAccusation;
+	private Solution possibleSolution;
 	
 	public ComputerPlayer(String playerName, String playerColor, int x, int y) {
 		super(playerName, playerColor, x, y);
@@ -20,10 +23,19 @@ public class ComputerPlayer extends Player {
 		peopleCards = new ArrayList<String>();
 		weaponCards = new ArrayList<String>();
 		roomCards = new ArrayList<String>();
+		canMakeAccusation = false;
 	}
 	
 	public ComputerPlayer() {
 		
+	}
+	public void fillCardArrays(Card c){
+		if(c.getCardType() == CardType.PERSON)
+			peopleCards.add(c.getName());
+		if(c.getCardType() == CardType.WEAPON)
+			weaponCards.add(c.getName());
+		if(c.getCardType() == CardType.ROOM)
+			roomCards.add(c.getName());
 	}
 
 	public void makeMove(Board b, int roll){
@@ -36,7 +48,7 @@ public class ComputerPlayer extends Player {
 
 	public BoardCell pickLocation(Set<BoardCell> targets) {
 		for (BoardCell b: targets) {
-			if (b.isRoom() && ((RoomCell) b).getInitial() != lastRoomVisited) {
+			if (b.isRoom() && ((RoomCell) b).getInitial() != getLastRoomVisited()) {
 				return b;
 			}
 		}
@@ -80,19 +92,24 @@ public class ComputerPlayer extends Player {
 	public void updateSeen(String seen) {
 		cardsSeen.add(seen);
 	}
-	
-	//For testing purposes
-	public void setLastRoomVisited(char c) {
-		lastRoomVisited = c;
+
+	public boolean isCanMakeAccusation() {
+		return canMakeAccusation;
+	}
+
+	public void setCanMakeAccusation(boolean canMakeAccusation) {
+		this.canMakeAccusation = canMakeAccusation;
+	}
+
+	public Solution getPossibleSolution() {
+		return possibleSolution;
+	}
+
+	public void setPossibleSolution(Solution possibleSolution) {
+		this.possibleSolution = possibleSolution;
 	}
 	
-	public void fillCardArrays(Card c) {
-		if (c.getCardType().equals("PERSON")) {
-			peopleCards.add(c.getName());
-		} else if (c.getCardType().equals("WEAPON")) {
-			weaponCards.add(c.getName());
-		} else {
-			roomCards.add(c.getName());
-		}
-	}
+	
+
+	
 }
